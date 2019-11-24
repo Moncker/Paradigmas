@@ -31,7 +31,7 @@ public class TestSUTVariosDias extends TestSUTBed {
         assertEquals( 13.2, sut.ciudadTiempo("Villarreal", new Date(03/01/2020)).getGrados(), 0.05);
 
     }
-
+    @Test
     public void demandaVariosDiasCoor() {
         Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45);
         Tiempo tiempoTeo1 = new Tiempo(12.4, Estado.SOLEADO, 30);
