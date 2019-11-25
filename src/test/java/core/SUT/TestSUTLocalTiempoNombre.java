@@ -9,7 +9,7 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class TestSUTLocaTiempo extends TestSUTBed {
+public class TestSUTLocalTiempoNombre extends TestSUTBed {
 
     @Test
     public void demandaGradosNombreValida() {
