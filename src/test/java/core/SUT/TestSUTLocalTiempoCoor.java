@@ -1,5 +1,6 @@
 package core.SUT;
 
+import core.model.Coordenadas;
 import core.model.Estado;
 import core.model.Tiempo;
 import org.junit.Test;
