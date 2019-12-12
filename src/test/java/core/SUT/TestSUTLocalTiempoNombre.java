@@ -4,8 +4,6 @@ import core.model.Estado;
 import core.model.Tiempo;
 import org.junit.Test;
 
-import java.util.Date;
-
 import static org.junit.Assert.*;
 
 public class TestSUTLocalTiempoNombre extends TestSUTBed {
@@ -13,7 +11,7 @@ public class TestSUTLocalTiempoNombre extends TestSUTBed {
     @Test
     public void demandaGradosNombreValida() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45, new Date());
+        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45);
         sut.ciudadTiempo("Castellón", tiempoTeo.getFecha());
 
         if (tiempoTeo.getGrados() < 50 && tiempoTeo.getGrados() > -50)
@@ -23,13 +21,13 @@ public class TestSUTLocalTiempoNombre extends TestSUTBed {
             correcto = true;
 
         assertNotNull(tiempoTeo.getEstado());
-        assertEquals(true, correcto);
+        assertTrue(correcto);
     }
     
     @Test
     public void demandaGradosNombreInvalida() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45, new Date());
+        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45);
         sut.ciudadTiempo("Castellón", tiempoTeo.getFecha());
 
         if (tiempoTeo.getGrados() < 50 && tiempoTeo.getGrados() > -50)
@@ -39,6 +37,6 @@ public class TestSUTLocalTiempoNombre extends TestSUTBed {
             correcto = true;
 
         assertNotNull(tiempoTeo.getEstado());
-        assertEquals(true, correcto);
+        assertTrue(correcto);
     }
 }

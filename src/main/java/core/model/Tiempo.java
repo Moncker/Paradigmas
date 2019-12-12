@@ -1,5 +1,6 @@
 package core.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Tiempo {
@@ -9,11 +10,21 @@ public class Tiempo {
     private double humedad;
     private Date fecha;
 
-    public Tiempo(double degrees, Estado estado, double humedad, Date fecha) {
+    public Tiempo(double degrees, Estado estado, double humedad) {
         this.grados = degrees;
         this.estado = estado;
         this.humedad = humedad;
-        this.fecha = fecha;
+        this.fecha = new Date();
+    }
+
+    public Tiempo(double degrees, Estado estado, double humedad, int dias) {
+        this.grados = degrees;
+        this.estado = estado;
+        this.humedad = humedad;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR)+dias);
+        this.fecha = cal.getTime();
     }
 
     public double getGrados() {

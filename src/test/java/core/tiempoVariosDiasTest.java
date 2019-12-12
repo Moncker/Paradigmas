@@ -9,8 +9,8 @@ import java.util.Date;
 public class tiempoVariosDiasTest {
     @Test
     public void tiempoVariosDiasFunctional(){
-        Tiempo resultadoReal = new Tiempo(0, Estado.LLUVIOSO, 31, new Date());
-        Tiempo resultadoEsperado = new Tiempo(32, Estado.SOLEADO, 32.5, new Date());
+        Tiempo resultadoReal = new Tiempo(0, Estado.LLUVIOSO, 31);
+        Tiempo resultadoEsperado = new Tiempo(32, Estado.SOLEADO, 32.5);
         throw new UnsupportedOperationException();
     }
 

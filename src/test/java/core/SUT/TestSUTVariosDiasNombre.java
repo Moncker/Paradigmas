@@ -1,13 +1,11 @@
 package core.SUT;
 
-import core.SUT.TestSUTBed;
 import core.model.Coordenadas;
 import core.model.Estado;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import org.junit.Test;
 
-import java.util.Date;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
@@ -17,10 +15,10 @@ public class TestSUTVariosDiasNombre extends TestSUTBed {
     @Test
     public void demandaVariosDiasNombre() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45, new Date(01/01/2020));
-        Tiempo tiempoTeo1 = new Tiempo(12.4, Estado.SOLEADO, 30, new Date(02/01/2020));
-        Tiempo tiempoTeo2= new Tiempo(13.2, Estado.NUBLADO, 60, new Date(03/01/2020));
-        Localizacion loc= new Localizacion("Villarreal", new Coordenadas(0.1,1.2,1.2,1.3,1.1, 1.1));
+        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45, 0);
+        Tiempo tiempoTeo1 = new Tiempo(12.4, Estado.SOLEADO, 30, 1);
+        Tiempo tiempoTeo2= new Tiempo(13.2, Estado.NUBLADO, 60, 2);
+        Localizacion loc= new Localizacion("Villarreal", new Coordenadas(0.1,1.2));
         //sut.addTiempo(loc,new Date(01/01/2020),tiempoTeo);
         //sut.addTiempo(loc,new Date(02/01/2020),tiempoTeo1);
         //sut.addTiempo(loc,new Date(03/01/2020),tiempoTeo2);
@@ -42,15 +40,15 @@ public class TestSUTVariosDiasNombre extends TestSUTBed {
         assertNotNull(tiempoTeo.getEstado());
         assertNotNull(tiempoTeo1.getEstado());
         assertNotNull(tiempoTeo2.getEstado());
-        assertEquals(true, correcto);
+        assertTrue(correcto);
     }
     @Test
     public void demandaVariosDiasNombreNotValid() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45, new Date(01/01/2020));
-        Tiempo tiempoTeo1 = new Tiempo(12.4, Estado.SOLEADO, 30, new Date(02/01/2020));
-        Tiempo tiempoTeo2= new Tiempo(13.2, Estado.NUBLADO, 60, new Date(03/01/2020));
-        Localizacion loc= new Localizacion("Villarreal", new Coordenadas(0.1,1.2,1.2,1.3,1.1, 1.1));
+        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45, 0);
+        Tiempo tiempoTeo1 = new Tiempo(12.4, Estado.SOLEADO, 30, 1);
+        Tiempo tiempoTeo2= new Tiempo(13.2, Estado.NUBLADO, 60, 2);
+        Localizacion loc= new Localizacion("Villarreal", new Coordenadas(0.1,1.2));
         //sut.addTiempo(loc,new Date(01/01/2020),tiempoTeo);
         //sut.addTiempo(loc,new Date(02/01/2020),tiempoTeo1);
         //sut.addTiempo(loc,new Date(03/01/2020),tiempoTeo2);
@@ -71,7 +69,7 @@ public class TestSUTVariosDiasNombre extends TestSUTBed {
         assertNotNull(tiempoTeo.getEstado());
         assertNotNull(tiempoTeo1.getEstado());
         assertNotNull(tiempoTeo2.getEstado());
-        assertEquals(true, correcto);
+        assertTrue(correcto);
     }
 
 
