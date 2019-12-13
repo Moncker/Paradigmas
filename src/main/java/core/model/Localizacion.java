@@ -1,5 +1,7 @@
 package core.model;
-import java.util.*;
+
+import core.model.Coordenadas;
+
 public class Localizacion {
 
     String name;            // Nombre ciudad
@@ -12,7 +14,11 @@ public class Localizacion {
 
     }
 
+    public String getName() {
+        return name;
+    }
 
-
-
+    public Coordenadas getCoordenadas() {
+        return coordenadas;
+    }
 }

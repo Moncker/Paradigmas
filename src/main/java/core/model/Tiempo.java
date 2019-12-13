@@ -1,39 +1,50 @@
 package core.model;
 
-import java.util.Calendar;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 public class Tiempo {
 
+    private int id;
     private double grados;
-    private Estado estado;
+    private String estado;
     private double humedad;
-    private Date fecha;
+    private LocalDate fecha;
 
-    public Tiempo(double degrees, Estado estado, double humedad) {
+    public Tiempo(double degrees, String estado, double humedad) {
         this.grados = degrees;
         this.estado = estado;
         this.humedad = humedad;
-        this.fecha = new Date();
+        this.fecha = LocalDate.now();
     }
 
-    public Tiempo(double degrees, Estado estado, double humedad, int dias) {
+    public Tiempo(double degrees, String estado, double humedad, int dias) {
         this.grados = degrees;
         this.estado = estado;
         this.humedad = humedad;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR)+dias);
-        this.fecha = cal.getTime();
+        this.fecha = LocalDate.now().plusDays(dias);
     }
 
     public double getGrados() {
         return grados;
     }
 
-    public Estado getEstado() { return estado; }
+    public String getEstado() { return estado; }
 
     public double getHumedad() { return humedad; }
 
-    public Date getFecha() { return fecha; }
+    public LocalDate getFecha() { return fecha; }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return grados + ", " + estado + ", " + humedad + ", " + fecha;
+    }
 }

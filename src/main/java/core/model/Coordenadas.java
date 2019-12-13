@@ -1,5 +1,6 @@
 package core.model;
 
+
 public class Coordenadas {
 
     Double X;
@@ -8,5 +9,13 @@ public class Coordenadas {
     public Coordenadas(Double x, Double y) {
         X = x;
         Y = y;
+    }
+
+    public Double getX() {
+        return X;
+    }
+
+    public Double getY() {
+        return Y;
     }
 }
