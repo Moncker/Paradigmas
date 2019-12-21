@@ -89,7 +89,7 @@ public class OpenWeatherMap {
      * @see <a href="http://openweathermap.org/appid">OWM.org API Key</a>
      */
     public OpenWeatherMap(String apiKey) {
-        this(Units.IMPERIAL, Language.ENGLISH, apiKey);
+        this(Units.METRIC, Language.ENGLISH, apiKey);
     }
 
     /**
