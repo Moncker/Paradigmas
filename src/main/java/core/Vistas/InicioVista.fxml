@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="284.0" layoutY="46.0" text="LogoDeLaApp">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="123.0" layoutY="111.0" prefHeight="112.0" prefWidth="553.0" text="No dispones de ninguna ciudad favorita">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="123.0" layoutY="284.0" prefHeight="34.0" prefWidth="210.0" text="Buscar ciudad: ">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <TextField fx:id="cityname" layoutX="357.0" layoutY="291.0" prefHeight="26.0" prefWidth="286.0" promptText="Madrid">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Button fx:id="ok1" layoutX="669.0" layoutY="293.0" mnemonicParsing="false" text="Buscar" />
+      <TextField fx:id="lon" layoutX="357.0" layoutY="353.0" prefHeight="30.0" prefWidth="106.0" promptText="lon">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Button fx:id="ok2" layoutX="669.0" layoutY="355.0" mnemonicParsing="false" text="Buscar" />
+      <TextField fx:id="lat" layoutX="527.0" layoutY="352.0" prefHeight="30.0" prefWidth="106.0" promptText="lat">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>
