@@ -1,6 +1,5 @@
 package core.SUT;
 
-import core.model.Estado;
 import core.model.Tiempo;
 import org.junit.Test;
 
@@ -11,7 +10,7 @@ public class TestSUTLocalTiempoNombre extends TestSUTBed {
     @Test
     public void demandaGradosNombreValida() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45);
+        Tiempo tiempoTeo = new Tiempo(12.2, "Nublado", 45);
         sut.ciudadTiempo("Castellón", tiempoTeo.getFecha());
 
         if (tiempoTeo.getGrados() < 50 && tiempoTeo.getGrados() > -50)
@@ -27,7 +26,7 @@ public class TestSUTLocalTiempoNombre extends TestSUTBed {
     @Test
     public void demandaGradosNombreInvalida() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45);
+        Tiempo tiempoTeo = new Tiempo(12.2, "Nublado", 45);
         sut.ciudadTiempo("Castellón", tiempoTeo.getFecha());
 
         if (tiempoTeo.getGrados() < 50 && tiempoTeo.getGrados() > -50)
