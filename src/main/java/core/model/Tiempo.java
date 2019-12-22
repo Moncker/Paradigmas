@@ -1,20 +1,10 @@
 package core.model;
 
-
-import core.OWM.AbstractWeather;
-import core.OWM.CurrentWeather;
-import core.OWM.OpenWeatherMap;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Tiempo {
 
-
-
-    private int id;
     private double grados;
     private String estado;
     private double humedad;
@@ -24,6 +14,15 @@ public class Tiempo {
     public Tiempo() {
 
     }
+
+    // Metodo para cargar tiempo desde BBDD
+    public Tiempo(double degrees, String estado, double humedad, LocalDate fecha) {
+        this.grados = degrees;
+        this.estado = estado;
+        this.humedad = humedad;
+        this.fecha = fecha;
+    }
+
     public Tiempo(double grados,double humedad, Date date){
         this.grados=grados;
         this.humedad=humedad;
@@ -45,13 +44,6 @@ public class Tiempo {
     }
 
 //__________________________________SETTERS Y GETTERS___________________________________________
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public double getGrados() {
         return grados;
@@ -83,6 +75,10 @@ public class Tiempo {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public boolean compareTo(Tiempo otro){
+        return this.grados == otro.grados && this.humedad == otro.humedad && this.estado.equals(otro.estado);
     }
 
     @Override
