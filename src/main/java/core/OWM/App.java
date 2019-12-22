@@ -17,7 +17,6 @@ public class App {
     HashMap<String, Tiempo> historial;
 
     public App(){
-
         this.owm.setApiKey("8d92c4241ad64d0fe808a2f501954581");
         this.historial= new HashMap<String, Tiempo>();
     };

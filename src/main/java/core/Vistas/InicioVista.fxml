@@ -23,19 +23,19 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <TextField fx:id="cityname" layoutX="357.0" layoutY="291.0" prefHeight="26.0" prefWidth="286.0" promptText="Madrid">
+      <TextField fx:id="cityname" layoutX="357.0" layoutY="290.0" prefHeight="26.0" prefWidth="286.0" promptText="Madrid">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <Button fx:id="ok1" layoutX="669.0" layoutY="293.0" mnemonicParsing="false" text="Buscar" />
+      <Button fx:id="ok1" layoutX="669.0" layoutY="293.0" mnemonicParsing="false" onAction="" text="Buscar" />
       <TextField fx:id="lon" layoutX="357.0" layoutY="353.0" prefHeight="30.0" prefWidth="106.0" promptText="lon">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
       <Button fx:id="ok2" layoutX="669.0" layoutY="355.0" mnemonicParsing="false" text="Buscar" />
-      <TextField fx:id="lat" layoutX="527.0" layoutY="352.0" prefHeight="30.0" prefWidth="106.0" promptText="lat">
+      <TextField fx:id="lat" layoutX="527.0" layoutY="352.0" prefHeight="30.0" prefWidth="114.0" promptText="lat">
          <font>
             <Font size="14.0" />
          </font>
