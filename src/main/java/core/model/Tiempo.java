@@ -12,34 +12,29 @@ import java.util.HashMap;
 
 public class Tiempo {
 
+
+
     private int id;
     private double grados;
     private String estado;
     private double humedad;
     private Date fecha;
 
-
-
-    private String ciudad;
-
     //CONSTRUCTORES
     public Tiempo() {
 
     }
-    public Tiempo(double grados,double humedad, Date date, String ciudad){
+    public Tiempo(double grados,double humedad, Date date){
         this.grados=grados;
         this.humedad=humedad;
         this.fecha=date;
-        this.ciudad = ciudad;
     }
 
-    public Tiempo(double degrees, String estado, double humedad, String ciudad) {
+    public Tiempo(double degrees, String estado, double humedad) {
         this.grados = degrees;
         this.estado = estado;
         this.humedad = humedad;
-        this.ciudad = ciudad;
         this.fecha = new Date();
-
     }
 
     public Tiempo(double degrees, String estado, double humedad, int dias) {
@@ -90,7 +85,9 @@ public class Tiempo {
         this.fecha = fecha;
     }
 
-    public String getCiudad() { return ciudad; }
+    public boolean compareTo(Tiempo otro){
+        return this.grados == otro.grados && this.humedad == otro.humedad && this.estado.equals(otro.estado);
+    }
 
     @Override
     public String toString() {

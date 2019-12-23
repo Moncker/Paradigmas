@@ -1,7 +1,6 @@
 package core.SUT;
 
 import core.model.Coordenadas;
-import core.model.Estado;
 import core.model.Tiempo;
 import org.junit.Test;
 
@@ -12,9 +11,9 @@ public class TestSUTVariosDiasCoor extends TestSUTBed {
     @Test
     public void demandaVariosDiasCoor() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(12.2, Estado.NUBLADO, 45, 0);
-        Tiempo tiempoTeo1 = new Tiempo(12.4, Estado.SOLEADO, 30, 1);
-        Tiempo tiempoTeo2= new Tiempo(13.2, Estado.NUBLADO, 60, 2);
+        Tiempo tiempoTeo = new Tiempo(12.2, "Nublado", 45, 0);
+        Tiempo tiempoTeo1 = new Tiempo(12.4, "Soleado", 30, 1);
+        Tiempo tiempoTeo2= new Tiempo(13.2, "Nublado", 60, 2);
         Coordenadas coor= new Coordenadas(0.1,1.2);
         //Localizacion loc= new Localizacion("Villarreal", coor);
         //sut.addTiempo(loc,new Date(01/01/2020),tiempoTeo);

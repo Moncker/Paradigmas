@@ -1,7 +1,6 @@
 package core.SUT;
 
 import core.model.Coordenadas;
-import core.model.Estado;
 import core.model.Tiempo;
 import org.junit.Test;
 
@@ -12,7 +11,7 @@ public class TestSUTLocalTiempoCoor extends TestSUTBed {
     @Test
     public void demandaGradosCoordenadaValida() {
         boolean correcto = false;
-        Tiempo tiempoTeo = new Tiempo(15.2, Estado.NUBLADO, 60);
+        Tiempo tiempoTeo = new Tiempo(15.2, "Nublado", 60);
         sut.coordenadaTiempo(new Coordenadas(0.1, 1.2), tiempoTeo.getFecha());
 
         if (tiempoTeo.getGrados() < 50 && tiempoTeo.getGrados() > -50)
