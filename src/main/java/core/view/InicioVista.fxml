@@ -2,43 +2,58 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="core.view.InicioController">
    <children>
-      <Label layoutX="284.0" layoutY="46.0" text="LogoDeLaApp">
+      <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="252.0" layoutY="34.0" text="LogoDeLaApp" textOverrun="CENTER_WORD_ELLIPSIS">
          <font>
             <Font size="37.0" />
          </font>
       </Label>
-      <Label layoutX="123.0" layoutY="111.0" prefHeight="112.0" prefWidth="553.0" text="No dispones de ninguna ciudad favorita">
+      <Label layoutX="314.0" layoutY="184.0" prefHeight="34.0" prefWidth="210.0" text="Buscar ciudad: ">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Label layoutX="123.0" layoutY="284.0" prefHeight="34.0" prefWidth="210.0" text="Buscar ciudad: ">
+      <TextField fx:id="cityname" layoutX="356.0" layoutY="286.0" prefHeight="26.0" prefWidth="286.0" promptText="Madrid">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Button fx:id="busquedaCiudad" layoutX="668.0" layoutY="289.0" mnemonicParsing="false" onAction="#busquedaCiudad" text="Buscar" />
+      <TextField fx:id="lon" layoutX="361.0" layoutY="413.0" prefHeight="30.0" prefWidth="106.0" promptText="lon">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Button fx:id="busquedaCoor" layoutX="673.0" layoutY="415.0" mnemonicParsing="false" onAction="#busquedaCoor" text="Buscar" />
+      <TextField fx:id="lat" layoutX="531.0" layoutY="412.0" prefHeight="30.0" prefWidth="114.0" promptText="lat">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="346.0" layoutY="244.0" prefHeight="34.0" prefWidth="210.0" text="Por nombre o tag">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Separator layoutX="346.0" layoutY="347.0" prefHeight="6.0" prefWidth="400.0" />
+      <Label layoutX="346.0" layoutY="371.0" prefHeight="34.0" prefWidth="210.0" text="Por longitud y latitud">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ListView fx:id="favList" layoutX="78.0" layoutY="251.0" prefHeight="181.0" prefWidth="170.0" />
+      <Label layoutX="66.0" layoutY="190.0" prefHeight="34.0" prefWidth="210.0" text="Favoritos:">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <TextField fx:id="cityname" layoutX="357.0" layoutY="290.0" prefHeight="26.0" prefWidth="286.0" promptText="Madrid">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <Button fx:id="busquedaCiudad" layoutX="669.0" layoutY="293.0" mnemonicParsing="false" onAction="#busquedaCiudad" text="Buscar" />
-      <TextField fx:id="lon" layoutX="357.0" layoutY="353.0" prefHeight="30.0" prefWidth="106.0" promptText="lon">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <Button fx:id="busquedaCoor" layoutX="669.0" layoutY="355.0" mnemonicParsing="false" onAction="#busquedaCoor" text="Buscar" />
-      <TextField fx:id="lat" layoutX="527.0" layoutY="352.0" prefHeight="30.0" prefWidth="114.0" promptText="lat">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
+      <Button fx:id="busquedaCiudad1" layoutX="191.0" layoutY="443.0" mnemonicParsing="false" onAction="#busquedaFavorito" text="Buscar" />
    </children>
 </AnchorPane>

@@ -1,6 +1,9 @@
 package core.OWM;
 
+import core.model.Localizacion;
 import core.model.Tiempo;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.http.client.ClientProtocolException;
 import org.graalvm.compiler.replacements.Log;
 import org.json.JSONException;
@@ -8,30 +11,40 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.time.Clock;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
     private  OpenWeatherMap owm = new OpenWeatherMap("weather");
+
     HashMap<String, Tiempo> historial;
+    HashMap<String, List<String>> ciudadEtiqueta;
+
+    private ObservableList<String> observableFav;
 
     public App(){
         this.owm.setApiKey("8d92c4241ad64d0fe808a2f501954581");
         this.historial= new HashMap<String, Tiempo>();
+        this.ciudadEtiqueta = new HashMap<>();
+        this.observableFav = FXCollections.<String>observableArrayList( "Cuenca",
+                "Toledo", "San Sebastian", "Cordoba");
+
     };
 
 
-    public Tiempo buscaTiempoPorNombre(String nombre) throws IOException {
+    public Tiempo buscaTiempoPorNombre(String nombre) throws IOException  {
         try {
             if (historial.containsKey(nombre)) {
                 return historial.get(nombre);
             } else {
                 CurrentWeather tiempo = owm.currentWeatherByCityName(nombre);
+
+                // anyadimos a variables los datos dados por la API
+                String ciudad = tiempo.getCityName();
                 double temp = tiempo.getMainInstance().getTemperature();
                 double humedad = tiempo.getMainInstance().getHumidity();
                 Date date=tiempo.getDateTime();
-                Tiempo ti= new Tiempo(temp,humedad,date);
+
+                Tiempo ti= new Tiempo(temp,humedad,date, ciudad);
                 return ti;
             }
 
@@ -43,16 +56,58 @@ public class App {
         }
 
 
-    }public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
 
+    }public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
         CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
+        String ciudad = tiempo.getCityName();
         double temp = tiempo.getMainInstance().getTemperature();
         double humedad = tiempo.getMainInstance().getHumidity();
         Date date = tiempo.getDateTime();
-        Tiempo ti = new Tiempo(temp, humedad, date);
+        Tiempo ti = new Tiempo(temp, humedad, date, ciudad);
         return ti;
 
     }
+
+    public String etiquetaCiudad(String etiqueta){
+
+        if (ciudadEtiqueta.isEmpty()){
+            return "";
+        }
+
+        for (String ciudad : ciudadEtiqueta.keySet()){
+            if(ciudadEtiqueta.get(ciudad).contains(etiqueta)){
+                return ciudad;
+            }
+        }
+        return "";
+
+
+    }
+
+    public Boolean addEtiqueta(String ciudad, String etiqueta) {
+
+        List<String> etiquetas = ciudadEtiqueta.get(ciudad);
+
+        // Si todavía no existe la entrada en ciudadEtiqueta, la creamos
+        if(etiquetas == null) {
+            etiquetas = new ArrayList<String>();
+            etiquetas.add(etiqueta);
+            ciudadEtiqueta.put(ciudad, etiquetas);
+        } else {   // Si ya existe, anyadimos en ella
+            if(!etiquetas.contains(etiqueta)) etiquetas.add(etiqueta);
+            else return false;
+        }
+        return true;
+    }
+
+    public Boolean addFavoritos(String ciudad){
+        return observableFav.add(ciudad);
+    }
+
+    public ObservableList<String> getFavoritos() {
+        return observableFav;
+    }
+
     public static void main(String[] args) {
         App instance=new App();
 

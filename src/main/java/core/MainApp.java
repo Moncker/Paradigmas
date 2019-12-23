@@ -1,9 +1,13 @@
 package core;
 
+import core.OWM.App;
+import core.model.Localizacion;
 import core.model.Tiempo;
 import core.view.InicioController;
 import core.view.TemperaturaVistaController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -16,11 +20,13 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private App servidor;
+
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        servidor = new App();
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Tiempo Sencillo");
@@ -53,6 +59,7 @@ public class MainApp extends Application {
             rootLayout.setCenter(selectionRol);
 
             InicioController controller = loader.getController();
+            controller.setServer(servidor);
             controller.setMainApp(this);
 
         } catch (IOException e) {
@@ -69,12 +76,12 @@ public class MainApp extends Application {
         rootLayout.setCenter(temperaturaVista);
 
         TemperaturaVistaController controller = loader.getController();
+        controller.setServer(servidor);
         controller.setTiempo(tiempo);
+        controller.setPrimaryStage(primaryStage);
         controller.setMainApp(this);
 
     }
-
-
 
 
 
