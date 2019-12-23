@@ -44,7 +44,7 @@ public class Connector {
     // ************************************************** WEATHER METHODS ******************************************************
     // *************************************************************************************************************************
 
-    // METODO PARA COGER EL TIEMPO MÁS ACTUAL GUARDADO EN LA BBDD DE UNA LOCALIZACION
+    // METODO PARA COGER EL TIEMPO  ACTUAL GUARDADO EN LA BBDD DE UNA LOCALIZACION
     public Tiempo getWeather(Localizacion localizacion) {
         ResultSet rs;
         Tiempo weather = null;

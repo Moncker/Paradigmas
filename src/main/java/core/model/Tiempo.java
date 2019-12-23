@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class Tiempo {
 
 
-
+    private String ciudad;
     private int id;
     private double grados;
     private String estado;
@@ -24,11 +24,7 @@ public class Tiempo {
     public Tiempo() {
 
     }
-    public Tiempo(double grados,double humedad, Date date){
-        this.grados=grados;
-        this.humedad=humedad;
-        this.fecha=date;
-    }
+
 
     public Tiempo(double degrees, String estado, double humedad) {
         this.grados = degrees;
@@ -44,7 +40,18 @@ public class Tiempo {
         //?????????????????
     }
 
-//__________________________________SETTERS Y GETTERS___________________________________________
+    public Tiempo(double grades, String state, double humidity, LocalDate parse) {
+    }
+
+    public Tiempo(double temp, double humedad, Date date, String ciudad) {
+        this.grados = temp;
+        this.estado = estado;
+        this.humedad = humedad;
+        this.fecha = new Date();
+        this.ciudad = ciudad;
+    }
+
+    //__________________________________SETTERS Y GETTERS___________________________________________
     public int getId() {
         return id;
     }
@@ -92,5 +99,9 @@ public class Tiempo {
     @Override
     public String toString() {
         return grados + ", " + estado + ", " + humedad + ", " + fecha;
+    }
+
+    public String getCiudad() {
+        return this.ciudad;
     }
 }
