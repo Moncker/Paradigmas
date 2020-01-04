@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Connector {
+public class ConnectorStore {
 
     String url = "paradigmas.db";
     Connection connect;
@@ -36,7 +36,7 @@ public class Connector {
         try {
             connect.close();
         } catch (SQLException ex) {
-            Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConnectorStore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

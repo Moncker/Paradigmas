@@ -15,7 +15,7 @@ public class testGestionTiempos extends persistenceTest{
         Localizacion localizacion = new Localizacion("Villareal", new Coordenadas(0.45, 0.85));
         Tiempo tiempoRes = new Tiempo(11, "Nublado", 70);
 
-        Tiempo tiempoMet = connector.getWeather(localizacion);
+        Tiempo tiempoMet = connectorStore.getWeather(localizacion);
 
         assertNotNull(tiempoMet);
         assertTrue(tiempoRes.compareTo(tiempoMet));
@@ -24,7 +24,7 @@ public class testGestionTiempos extends persistenceTest{
     @Test(expected = CityNotFoundException.class)
     public void recogerTiempoInvalido() {
         Localizacion localizacion = new Localizacion("Lisboa", new Coordenadas(0.95, 6.85));
-        connector.getWeather(localizacion);
+        connectorStore.getWeather(localizacion);
     }
 
     @Test
@@ -33,8 +33,8 @@ public class testGestionTiempos extends persistenceTest{
         //String fecha = "2019-09-24";
         Tiempo tiempoRes = new Tiempo(38, "Soleado", 15);
 
-        connector.saveWeather(tiempoRes, localizacion);
-        Tiempo tiempoMet = connector.getWeather(localizacion);
+        connectorStore.saveWeather(tiempoRes, localizacion);
+        Tiempo tiempoMet = connectorStore.getWeather(localizacion);
 
         System.out.println(tiempoMet.getGrados() + ", "+tiempoMet.getEstado() + ", "+tiempoMet.getHumedad());
         assertTrue(tiempoMet.compareTo(tiempoRes));
@@ -46,13 +46,13 @@ public class testGestionTiempos extends persistenceTest{
         //String fecha = "2019-02-23";
         Tiempo tiempoRes = new Tiempo(26, "Soleado", 35);
 
-        connector.saveWeather(tiempoRes, localizacion);
-        Tiempo tiempoMet = connector.getWeather(localizacion);
+        connectorStore.saveWeather(tiempoRes, localizacion);
+        Tiempo tiempoMet = connectorStore.getWeather(localizacion);
         assertTrue(tiempoMet.compareTo(tiempoRes));
     }
 
     @Test
     public void actualizarTiempos() {
-        connector.updateWeatherDatabase();
+        connectorStore.updateWeatherDatabase();
     }
 }
