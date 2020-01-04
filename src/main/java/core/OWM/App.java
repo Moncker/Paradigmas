@@ -1,11 +1,13 @@
 package core.OWM;
 
+import core.Exceptions.CoordenadasInvalidasException;
+import core.SimpleWeather;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.http.client.ClientProtocolException;
-import org.graalvm.compiler.replacements.Log;
+//import org.graalvm.compiler.replacements.Log;
 import org.json.JSONException;
 
 
@@ -15,7 +17,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
-public class App {
+public class App implements SimpleWeather {
     private  OpenWeatherMap owm = new OpenWeatherMap("weather");
 
     HashMap<String, Tiempo> historial;
@@ -84,7 +86,7 @@ public class App {
                         .toLocalDate();
 
 
-                Tiempo ti= new Tiempo(temp,humedad,localdate, ciudad);
+                Tiempo ti= new Tiempo(temp, ciudad, humedad, localdate);
                 return ti;
             }
 
@@ -94,10 +96,14 @@ public class App {
             e.printStackTrace();
             return null;
         }
+    }
 
+    @Override
+    public Tiempo buscaTiempoPorCoordenadas(double lat, double lon) throws IOException, CoordenadasInvalidasException, CoordenadasInvalidasException, CoordenadasInvalidasException {
+        return null;
+    }
 
-
-    }public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
+    public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
         CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
         String ciudad = tiempo.getCityName();
         double temp = tiempo.getMainInstance().getTemperature();
@@ -106,9 +112,24 @@ public class App {
         LocalDate localdate= date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
-        Tiempo ti = new Tiempo(temp, humedad, localdate, ciudad);
+        Tiempo ti = new Tiempo(temp, ciudad, humedad, localdate);
         return ti;
 
+    }
+
+    @Override
+    public Tiempo[] pronosticoNombre(String nombre) {
+        return new Tiempo[0];
+    }
+
+    @Override
+    public Tiempo[] pronosticoCoordenadas(double lat, double lon) {
+        return new Tiempo[0];
+    }
+
+
+    public Tiempo[] pronosticoCoordenadas(float lat, float lon) {
+        return new Tiempo[0];
     }
 
     public String etiquetaCiudad(String etiqueta){
@@ -143,8 +164,23 @@ public class App {
         return true;
     }
 
+    @Override
+    public Boolean remplaceEtiqueta(String ciudad, String etiqueta) {
+        return null;
+    }
+
     public Boolean addFavoritos(String ciudad){
         return observableFav.add(ciudad);
+    }
+
+    @Override
+    public Boolean removeFavoritos(String ciudad) {
+        return null;
+    }
+
+    @Override
+    public Boolean getFavoritos(String ciudad) {
+        return null;
     }
 
     public ObservableList<String> getFavoritos() {

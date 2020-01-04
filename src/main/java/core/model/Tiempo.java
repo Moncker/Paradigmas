@@ -32,6 +32,14 @@ public class Tiempo {
         this.fecha = LocalDate.now();
     }
 
+    public Tiempo(String nombre, double degrees, String estado, double humedad) {
+        this.ciudad = nombre;
+        this.grados = degrees;
+        this.estado = estado;
+        this.humedad = humedad;
+        this.fecha = LocalDate.now();
+    }
+
     public Tiempo(double degrees, String estado, double humedad, int dias) {
         this.grados = degrees;
         this.estado = estado;

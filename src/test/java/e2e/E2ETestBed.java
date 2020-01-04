@@ -1,4 +1,4 @@
-package core.e2e;
+package e2e;
 
 import core.OWM.App;
 import core.SimpleWeather;

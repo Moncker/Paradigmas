@@ -1,5 +1,6 @@
 package core;
 
+import core.Exceptions.CoordenadasInvalidasException;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import core.persistence.ConnectorStore;
@@ -26,7 +27,7 @@ public class MemoizedSimpleWeather implements SimpleWeather {
 
     @Override
     public Tiempo buscaTiempoPorNombre(String nombre) throws IOException, CityNotFoundException {
-        Tiempo tiempo = connectorStore.getWeather(new Localizacion("Madrid"));
+        Tiempo tiempo = connectorStore.getWeather(new Localizacion(nombre));
 
         if (tiempo != null)
             return tiempo;
@@ -35,14 +36,22 @@ public class MemoizedSimpleWeather implements SimpleWeather {
     }
 
     @Override
-    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException {
+    public Tiempo buscaTiempoPorCoordenadas(double lat, double lon) throws IOException, CoordenadasInvalidasException{
         return null;
     }
 
     @Override
-    public String etiquetaCiudad(String etiqueta) {
-        return null;
+
+    public Tiempo[] pronosticoNombre(String nombre) {
+        return new Tiempo[0];
     }
+
+    @Override
+    public Tiempo[] pronosticoCoordenadas(double lat, double lon) {
+        return new Tiempo[0];
+    }
+
+
 
     @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) {
@@ -50,7 +59,22 @@ public class MemoizedSimpleWeather implements SimpleWeather {
     }
 
     @Override
+    public Boolean remplaceEtiqueta(String ciudad, String etiqueta) {
+        return null;
+    }
+
+    @Override
     public Boolean addFavoritos(String ciudad) {
+        return null;
+    }
+
+    @Override
+    public Boolean removeFavoritos(String ciudad) {
+        return null;
+    }
+
+    @Override
+    public Boolean getFavoritos(String ciudad) {
         return null;
     }
 
