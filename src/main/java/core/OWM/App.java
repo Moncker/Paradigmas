@@ -1,11 +1,12 @@
 package core.OWM;
 
+import core.SimpleWeather;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.http.client.ClientProtocolException;
-import org.graalvm.compiler.replacements.Log;
+//import org.graalvm.compiler.replacements.Log;
 import org.json.JSONException;
 
 
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.time.Clock;
 import java.util.*;
 
-public class App {
+public class App implements SimpleWeather {
     private  OpenWeatherMap owm = new OpenWeatherMap("weather");
 
     HashMap<String, Tiempo> historial;
@@ -29,7 +30,6 @@ public class App {
                 "Toledo", "San Sebastian", "Cordoba");
 
     };
-
 
     public Tiempo buscaTiempoPorNombre(String nombre) throws IOException  {
         try {
@@ -57,7 +57,8 @@ public class App {
 
 
 
-    }public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
+    }
+    public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
         CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
         String ciudad = tiempo.getCityName();
         double temp = tiempo.getMainInstance().getTemperature();

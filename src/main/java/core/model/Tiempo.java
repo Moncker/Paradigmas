@@ -14,11 +14,10 @@ public class Tiempo {
 
 
     private String ciudad;
-    private int id;
     private double grados;
     private String estado;
     private double humedad;
-    private Date fecha;
+    private LocalDate fecha;
 
     //CONSTRUCTORES
     public Tiempo() {
@@ -30,7 +29,7 @@ public class Tiempo {
         this.grados = degrees;
         this.estado = estado;
         this.humedad = humedad;
-        this.fecha = new Date();
+        this.fecha = LocalDate.now();
     }
 
     public Tiempo(double degrees, String estado, double humedad, int dias) {
@@ -47,18 +46,11 @@ public class Tiempo {
         this.grados = temp;
         this.estado = estado;
         this.humedad = humedad;
-        this.fecha = new Date();
+        this.fecha = LocalDate.now();
         this.ciudad = ciudad;
     }
 
     //__________________________________SETTERS Y GETTERS___________________________________________
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public double getGrados() {
         return grados;
@@ -84,11 +76,11 @@ public class Tiempo {
         this.humedad = humedad;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
