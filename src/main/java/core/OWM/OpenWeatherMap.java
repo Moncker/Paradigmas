@@ -235,34 +235,40 @@ public class OpenWeatherMap {
 
 
 
-    public DailyForecast dailyForecastByCityName(String cityName, byte count)
+    public HourlyForecast dailyForecastByCityName(String cityName, byte count)
             throws IOException, JSONException {
-        String response = owmResponse.dailyForecastByCityName(cityName, count);
-        return this.dailyForecastFromRawResponse(response);
+//        String response = owmResponse.dailyForecastByCityName(cityName, count);
+        String response = owmResponse.hourlyForecastByCityName(cityName);
+        return this.hourlyForecastFromRawResponse(response);
     }
 
-    public DailyForecast dailyForecastByCityName(String cityName, String countryCode, byte count)
+    public HourlyForecast dailyForecastByCityName(String cityName, String countryCode, byte count)
             throws IOException, JSONException {
         String response = owmResponse.dailyForecastByCityName(cityName, countryCode, count);
-        return this.dailyForecastFromRawResponse(response);
+        return this.hourlyForecastFromRawResponse(response);
     }
 
-    public DailyForecast dailyForecastByCityCode(long cityCode, byte count)
+    public HourlyForecast dailyForecastByCityCode(long cityCode, byte count)
             throws JSONException {
         String response = owmResponse.dailyForecastByCityCode(cityCode, count);
-        return this.dailyForecastFromRawResponse(response);
+        return this.hourlyForecastFromRawResponse(response);
     }
 
-    public DailyForecast dailyForecastByCoordinates(float latitude, float longitude, byte count)
+    public HourlyForecast dailyForecastByCoordinates(float latitude, float longitude, byte count)
             throws JSONException {
         String response = owmResponse.dailyForecastByCoordinates(latitude, longitude, count);
-        return this.dailyForecastFromRawResponse(response);
+        return this.hourlyForecastFromRawResponse(response);
     }
 
-    public DailyForecast dailyForecastFromRawResponse(String response)
+//    public DailyForecast dailyForecastFromRawResponse(String response)
+//            throws JSONException {
+//        JSONObject jsonObj = (response != null) ? new JSONObject(response) : null;
+//        return new DailyForecast(jsonObj);
+//    }
+    public HourlyForecast hourlyForecastFromRawResponse(String response)
             throws JSONException {
         JSONObject jsonObj = (response != null) ? new JSONObject(response) : null;
-        return new DailyForecast(jsonObj);
+        return new HourlyForecast(jsonObj);
     }
 
     /**
@@ -392,11 +398,11 @@ public class OpenWeatherMap {
         Constructors
          */
         private OWMAddress(String appId) {
-            this(Units.IMPERIAL, Language.ENGLISH, appId);
+            this(Units.IMPERIAL, Language.SPANISH, appId);
         }
 
         private OWMAddress(Units units, String appId) {
-            this(units, Language.ENGLISH, appId);
+            this(units, Language.SPANISH, appId);
         }
 
         private OWMAddress(Units units, Language lang, String appId) {
@@ -635,8 +641,8 @@ public class OpenWeatherMap {
         /*
         Responses for daily forecasts
          */
-        public String dailyForecastByCityName(String cityName, byte count) throws UnsupportedEncodingException {
-            String address = owmAddress.dailyForecastByCityName(cityName, count);
+        public String dailyForecastByCityName(String cityName) throws UnsupportedEncodingException {
+            String address = owmAddress.hourlyForecastByCityName(cityName);
             return httpGET(address);
         }
 

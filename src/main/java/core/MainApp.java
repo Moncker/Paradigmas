@@ -1,13 +1,10 @@
 package core;
 
 import core.OWM.App;
-import core.model.Localizacion;
 import core.model.Tiempo;
 import core.view.InicioController;
 import core.view.TemperaturaVistaController;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;

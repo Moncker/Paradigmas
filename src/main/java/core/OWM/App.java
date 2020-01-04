@@ -1,20 +1,21 @@
 package core.OWM;
 
-import core.SimpleWeather;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.http.client.ClientProtocolException;
-//import org.graalvm.compiler.replacements.Log;
+import org.graalvm.compiler.replacements.Log;
 import org.json.JSONException;
 
 
 import java.io.IOException;
 import java.time.Clock;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
-public class App implements SimpleWeather {
+public class App {
     private  OpenWeatherMap owm = new OpenWeatherMap("weather");
 
     HashMap<String, Tiempo> historial;
@@ -23,6 +24,7 @@ public class App implements SimpleWeather {
     private ObservableList<String> observableFav;
 
     public App(){
+
         this.owm.setApiKey("8d92c4241ad64d0fe808a2f501954581");
         this.historial= new HashMap<String, Tiempo>();
         this.ciudadEtiqueta = new HashMap<>();
@@ -31,9 +33,43 @@ public class App implements SimpleWeather {
 
     };
 
+    public void buscaTiempoPorNombreDias(String nombre) throws IOException{
+        try {
+//            Tiempo[] ret= new Tiempo[3];
+            byte forecastDays = 3;
+            System.out.println("1");
+            HourlyForecast forecast = owm.dailyForecastByCityName(nombre,forecastDays);
+            System.out.println("2");
+
+            int numForecasts = forecast.getForecastCount();//40 SIEMPRE
+
+
+            for (int i = 0; i < 21; i+=8) {
+                HourlyForecast.Forecast dayForecast = forecast.getForecastInstance(i);
+                Float temperature = dayForecast.getMainInstance().getTemperature();
+                Float humidity= dayForecast.getMainInstance().getHumidity();
+                Float s=dayForecast.getCloudsInstance().getPercentageOfClouds();
+                String a=dayForecast.getWeatherInstance(0).getWeatherDescription();
+
+
+                System.out.println(dayForecast.getDateTime());
+                System.out.println(dayForecast.getMainInstance().getTemperature());
+                System.out.println("Nubes: "+s);
+                System.out.println("Descripción: "+a);
+
+
+
+
+            }
+            }catch(IOException e){
+                e.printStackTrace();
+
+            }
+        }
+
     public Tiempo buscaTiempoPorNombre(String nombre) throws IOException  {
         try {
-            if (historial.containsKey(nombre)) {
+            if (historial.containsKey(nombre)) {//MODIFICAR
                 return historial.get(nombre);
             } else {
                 CurrentWeather tiempo = owm.currentWeatherByCityName(nombre);
@@ -43,8 +79,12 @@ public class App implements SimpleWeather {
                 double temp = tiempo.getMainInstance().getTemperature();
                 double humedad = tiempo.getMainInstance().getHumidity();
                 Date date=tiempo.getDateTime();
+                LocalDate localdate=date.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
 
-                Tiempo ti= new Tiempo(temp,humedad,date, ciudad);
+
+                Tiempo ti= new Tiempo(temp,humedad,localdate, ciudad);
                 return ti;
             }
 
@@ -57,14 +97,16 @@ public class App implements SimpleWeather {
 
 
 
-    }
-    public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
+    }public Tiempo buscaTiempoPorCoordenadas(float lat,float lon) throws IOException {
         CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
         String ciudad = tiempo.getCityName();
         double temp = tiempo.getMainInstance().getTemperature();
         double humedad = tiempo.getMainInstance().getHumidity();
         Date date = tiempo.getDateTime();
-        Tiempo ti = new Tiempo(temp, humedad, date, ciudad);
+        LocalDate localdate= date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        Tiempo ti = new Tiempo(temp, humedad, localdate, ciudad);
         return ti;
 
     }
@@ -113,7 +155,10 @@ public class App implements SimpleWeather {
         App instance=new App();
 
         try {
+            instance.buscaTiempoPorNombreDias("Madrid");
             Scanner myObj= new Scanner(System.in);
+            instance.buscaTiempoPorNombreDias("Madrid");
+
             System.out.println("Que quieres buscar? 1-coordenadas, 2-nombre de ciudad");
             String op = myObj.nextLine();  // Read user input
             if(op.equals(""+1)){

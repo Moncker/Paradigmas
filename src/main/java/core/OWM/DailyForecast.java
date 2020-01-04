@@ -76,6 +76,7 @@ public class DailyForecast extends AbstractForecast {
         }
     }
 
+
     /**
      * @param index Index of Forecast instance in the list.
      * @return Forecast instance if available, otherwise <code>null</code>.
