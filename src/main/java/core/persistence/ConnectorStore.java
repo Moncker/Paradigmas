@@ -54,9 +54,9 @@ public class ConnectorStore {
 
             if (rs.isClosed()) throw new CityNotFoundException("No se tienen resultados de esa búsqueda");
 
-            double grades = rs.getDouble("grados");
+            float grades = rs.getFloat("grados");
             String state = rs.getString("estado");
-            double humidity = rs.getDouble("humedad");
+            float humidity = rs.getFloat("humedad");
             String date = rs.getString("fecha");
 
             weather = new Tiempo(grades, state, humidity, LocalDate.parse(date));

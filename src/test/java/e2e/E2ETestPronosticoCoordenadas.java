@@ -1,5 +1,6 @@
 package e2e;
 
+import core.Exceptions.CoordenadasInvalidasException;
 import core.model.Coordenadas;
 import core.model.Tiempo;
 import core.persistence.exceptions.CityNotFoundException;
@@ -15,13 +16,14 @@ public class E2ETestPronosticoCoordenadas extends E2ETestBed {
 
 
     @Test
-    public void pronosticoCoordenadas() throws IOException{
+    public void PronosticoCoordenadasValid() throws IOException, CoordenadasInvalidasException {
         Tiempo[] tiempos = simpleWeather.pronosticoCoordenadas(42.9, 40.24);
         assertEquals(tiempos.length, 3);
     }
 
-    @Test(expected = CityNotFoundException.class)
-    public void pronosticoNombreInvalid() throws IOException, CityNotFoundException {
+    @Test
+    public void PronosticoCoordenadasInvalid() throws IOException, CoordenadasInvalidasException {
         Tiempo[] tiempos = simpleWeather.pronosticoCoordenadas(42.9, 40.24);
+        assertEquals(tiempos.length, 3);
     }
 }

@@ -76,9 +76,40 @@ public class InicioController {
 
             }
         });
+    }
+
+
+    @FXML
+    public void busquedaCiudadDias() throws IOException {
+        String t = cityname.getText();  //tambien etiqueta
+        String lati = lat.getText();
+        String longi = lon.getText();
+
+        String ciudad = servidor.etiquetaCiudad(t);
+        if (! ciudad.equals(""))
+            t = ciudad;
+
+        String finalT = t;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println(finalT);
+                    Tiempo[] tiempos = servidor.pronosticoNombre(finalT);
+
+                    mainApp.showTemperaturaDiasVista(tiempos);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
 
     }
+
+
+
 
     @FXML
     public void busquedaFavorito() throws IOException{

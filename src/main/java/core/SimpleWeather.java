@@ -9,12 +9,12 @@ import java.io.IOException;
 
 public interface SimpleWeather {
     public Tiempo buscaTiempoPorNombre(String nombre) throws IOException, CityNotFoundException;
-    public Tiempo buscaTiempoPorCoordenadas(double lat, double lon) throws IOException, CoordenadasInvalidasException, core.Exceptions.CoordenadasInvalidasException, CoordenadasInvalidasException;
+    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, CoordenadasInvalidasException, core.Exceptions.CoordenadasInvalidasException, CoordenadasInvalidasException;
 
     public Tiempo[] pronosticoNombre(String nombre);
-    public Tiempo[] pronosticoCoordenadas(double lat, double lon) ;
+    public Tiempo[] pronosticoCoordenadas(float lat, float lon) throws CoordenadasInvalidasException;
 
-    public Boolean addEtiqueta (String ciudad, String etiqueta);
+    public Boolean addEtiqueta (String ciudad, String etiqueta) throws CityNotFoundException;
     public Boolean remplaceEtiqueta (String ciudad, String etiqueta);
 
     public Boolean addFavoritos(String ciudad);

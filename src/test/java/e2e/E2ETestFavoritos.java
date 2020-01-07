@@ -1,4 +1,23 @@
 package e2e;
 
-public class E2ETestFavoritos {
+import core.persistence.exceptions.CityNotFoundException;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+
+public class E2ETestFavoritos extends E2ETestBed {
+
+    @Test
+    public void tiempoNombreValid() throws IOException, CityNotFoundException {
+        assertEquals("Ciudad correcta", "Madrid", simpleWeather.buscaTiempoPorNombre("Madrid").getCiudad());
+    }
+
+    //TODO    @Test(expected = CityNotFoundException.class)
+    @Test(expected = CityNotFoundException.class)
+    public void tiempoNombreInvalid() throws IOException, CityNotFoundException {
+        assertEquals("Ciudad incorrecta",simpleWeather.buscaTiempoPorNombre("XXX").getCiudad());
+    }
+
 }

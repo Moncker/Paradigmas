@@ -20,11 +20,9 @@ public class Tiempo {
     private LocalDate fecha;
 
     //CONSTRUCTORES
-    public Tiempo() {
+    public Tiempo() {}
 
-    }
-
-
+    // Constructor tiempo de hoy sin nombre
     public Tiempo(double degrees, String estado, double humedad) {
         this.grados = degrees;
         this.estado = estado;
@@ -32,6 +30,7 @@ public class Tiempo {
         this.fecha = LocalDate.now();
     }
 
+    // Constructor tiempo de hoy con nombre
     public Tiempo(String nombre, double degrees, String estado, double humedad) {
         this.ciudad = nombre;
         this.grados = degrees;
@@ -40,23 +39,27 @@ public class Tiempo {
         this.fecha = LocalDate.now();
     }
 
-    public Tiempo(double degrees, String estado, double humedad, int dias) {
+    //Constructor tiempo con fecha y sin nombre
+    public Tiempo(float degrees, String estado, float humedad, LocalDate fecha) {
         this.grados = degrees;
         this.estado = estado;
         this.humedad = humedad;
-        //?????????????????
+        this.fecha = fecha;
     }
 
-    public Tiempo(double grades, String state, double humidity, LocalDate parse) {
-    }
-
-    public Tiempo(double temp, double humedad, Date date, String ciudad) {
-        this.grados = temp;
+    //Constructor tiempo con fecha y nombre
+    public Tiempo(String nombre, float degrees, String estado, float humedad, LocalDate fecha) {
+        this.ciudad = nombre;
+        this.grados = degrees;
         this.estado = estado;
         this.humedad = humedad;
-        this.fecha = LocalDate.now();
-        this.ciudad = ciudad;
+        this.fecha = fecha;
     }
+
+
+
+
+
 
     //__________________________________SETTERS Y GETTERS___________________________________________
 

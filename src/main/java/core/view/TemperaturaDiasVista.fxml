@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="core.view.TemperaturaDiasController">
+   <children>
+      <Label fx:id="Logo" layoutX="284.0" layoutY="46.0" text="LogoDeLaApp">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label fx:id="cityname" layoutX="83.0" layoutY="110.0" prefHeight="54.0" prefWidth="301.0" text="cityname">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <Button layoutX="309.0" layoutY="465.0" mnemonicParsing="false" onAction="#volverASeleccionCiudad" prefHeight="45.0" prefWidth="191.0" text="Seleccionar otra ciudad" />
+      <GridPane layoutX="125.0" layoutY="184.0" prefHeight="115.0" prefWidth="510.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.20001220703125" minWidth="10.0" prefWidth="107.80001220703124" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.20001220703125" minWidth="10.0" prefWidth="104.39997558593751" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.20001220703125" minWidth="10.0" prefWidth="100.79997558593749" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.20001220703125" minWidth="10.0" prefWidth="77.60002441406249" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="106.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="124.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="t1" prefHeight="30.0" prefWidth="40.0" text="t1" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label text="Temperatura" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="h1" prefHeight="30.0" prefWidth="41.0" text="h1" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label text="Humedad" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label text="Dia">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="d1" prefHeight="30.0" prefWidth="118.0" text="d1" GridPane.columnIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="d2" prefHeight="30.0" prefWidth="118.0" text="d2" GridPane.columnIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="d3" prefHeight="30.0" prefWidth="104.0" text="d3" GridPane.columnIndex="3">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="t2" prefHeight="30.0" prefWidth="40.0" text="t2" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="t3" prefHeight="30.0" prefWidth="40.0" text="t3" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="h2" prefHeight="30.0" prefWidth="40.0" text="h2" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="h3" prefHeight="30.0" prefWidth="40.0" text="h3" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <Button layoutX="125.0" layoutY="329.0" mnemonicParsing="false" onAction="#addFavoritos" prefHeight="30.0" prefWidth="124.0" text="Añadir a Favoritos" />
+      <Button layoutX="607.0" layoutY="366.0" mnemonicParsing="false" onAction="#crearEtiqueta" prefHeight="30.0" prefWidth="66.0" text="Enviar">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="404.0" layoutY="309.0" text="Etiqueta:">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textoEtiqueta" layoutX="426.0" layoutY="366.0" prefHeight="30.0" prefWidth="158.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>

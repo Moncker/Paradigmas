@@ -15,18 +15,17 @@ import static org.junit.Assert.assertNotNull;
 
 public class E2ETestPronosticoNombre extends E2ETestBed {
 
-    @Test(expected = IOException.class)
+    @Test
     public void pronosticoNombreValid() throws IOException{
         Tiempo[] tiempos = simpleWeather.pronosticoNombre("Madrid");
 
-        if (tiempos.length != 3)
-            throw new IOException();
+        assertEquals(tiempos.length, 3);
     }
 
-    @Test(expected = CityNotFoundException.class)
+    @Test
     public void pronosticoNombreInvalid() throws IOException, CityNotFoundException {
-        LocalDate hoyDate = LocalDate.now();
-        LocalDate mananaDate = hoyDate.plusDays(1);
-        LocalDate pasMananaDate = hoyDate.plusDays(2);
+        Tiempo[] tiempos = simpleWeather.pronosticoNombre("XXX");
+
+        assertNotEquals(tiempos.length, 3);
     }
 }

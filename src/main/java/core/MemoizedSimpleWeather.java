@@ -36,22 +36,19 @@ public class MemoizedSimpleWeather implements SimpleWeather {
     }
 
     @Override
-    public Tiempo buscaTiempoPorCoordenadas(double lat, double lon) throws IOException, CoordenadasInvalidasException{
+    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, CoordenadasInvalidasException{
         return null;
     }
 
     @Override
-
     public Tiempo[] pronosticoNombre(String nombre) {
         return new Tiempo[0];
     }
 
     @Override
-    public Tiempo[] pronosticoCoordenadas(double lat, double lon) {
+    public Tiempo[] pronosticoCoordenadas(float lat, float lon) {
         return new Tiempo[0];
     }
-
-
 
     @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) {

@@ -3,6 +3,7 @@ package core;
 import core.OWM.App;
 import core.model.Tiempo;
 import core.view.InicioController;
+import core.view.TemperaturaDiasController;
 import core.view.TemperaturaVistaController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,8 +19,6 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private App servidor;
-
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -79,6 +78,23 @@ public class MainApp extends Application {
         controller.setMainApp(this);
 
     }
+
+    public void showTemperaturaDiasVista(Tiempo[] tiempos) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/TemperaturaDiasVista.fxml"));
+        AnchorPane temperaturaVista = (AnchorPane) loader.load();
+
+        rootLayout.setCenter(temperaturaVista);
+
+
+        TemperaturaDiasController controller = loader.getController();
+        controller.setServer(servidor);
+        controller.setTiempos(tiempos);
+        controller.setPrimaryStage(primaryStage);
+        controller.setMainApp(this);
+    }
+
 
 
 

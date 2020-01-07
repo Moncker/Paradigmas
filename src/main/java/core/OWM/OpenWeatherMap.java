@@ -260,7 +260,7 @@ public class OpenWeatherMap {
         return this.hourlyForecastFromRawResponse(response);
     }
 
-//    public DailyForecast dailyForecastFromRawResponse(String response)
+    //    public DailyForecast dailyForecastFromRawResponse(String response)
 //            throws JSONException {
 //        JSONObject jsonObj = (response != null) ? new JSONObject(response) : null;
 //        return new DailyForecast(jsonObj);

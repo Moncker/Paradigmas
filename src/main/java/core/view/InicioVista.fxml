@@ -26,13 +26,13 @@
          </font>
       </TextField>
       <Button fx:id="busquedaCiudad" layoutX="668.0" layoutY="289.0" mnemonicParsing="false" onAction="#busquedaCiudad" text="Buscar" />
-      <TextField fx:id="lon" layoutX="361.0" layoutY="413.0" prefHeight="30.0" prefWidth="106.0" promptText="lon">
+      <TextField fx:id="lon" layoutX="361.0" layoutY="425.0" prefHeight="30.0" prefWidth="106.0" promptText="lon">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <Button fx:id="busquedaCoor" layoutX="673.0" layoutY="415.0" mnemonicParsing="false" onAction="#busquedaCoor" text="Buscar" />
-      <TextField fx:id="lat" layoutX="531.0" layoutY="412.0" prefHeight="30.0" prefWidth="114.0" promptText="lat">
+      <Button fx:id="busquedaCoor" layoutX="673.0" layoutY="427.0" mnemonicParsing="false" onAction="#busquedaCoor" text="Buscar" />
+      <TextField fx:id="lat" layoutX="531.0" layoutY="424.0" prefHeight="30.0" prefWidth="114.0" promptText="lat">
          <font>
             <Font size="14.0" />
          </font>
@@ -42,8 +42,8 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Separator layoutX="346.0" layoutY="347.0" prefHeight="6.0" prefWidth="400.0" />
-      <Label layoutX="346.0" layoutY="371.0" prefHeight="34.0" prefWidth="210.0" text="Por longitud y latitud">
+      <Separator layoutX="346.0" layoutY="359.0" prefHeight="6.0" prefWidth="400.0" />
+      <Label layoutX="346.0" layoutY="383.0" prefHeight="34.0" prefWidth="210.0" text="Por longitud y latitud">
          <font>
             <Font size="18.0" />
          </font>
@@ -55,5 +55,6 @@
          </font>
       </Label>
       <Button fx:id="busquedaCiudad1" layoutX="191.0" layoutY="443.0" mnemonicParsing="false" onAction="#busquedaFavorito" text="Buscar" />
+      <Button fx:id="busquedaCiudad2" layoutX="657.0" layoutY="329.0" mnemonicParsing="false" onAction="#busquedaCiudadDias" text="Pronostico" />
    </children>
 </AnchorPane>
