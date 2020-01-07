@@ -1,6 +1,7 @@
 package core;
 
 import core.OWM.App;
+import core.OWM.App_persistence;
 import core.model.Tiempo;
 import core.view.InicioController;
 import core.view.TemperaturaDiasController;
@@ -18,11 +19,12 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private App servidor;
+    private SimpleWeather servidor;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        servidor = new App();
+        // servidor = new App();    // Version sin persistencia
+        servidor = new App_persistence(); //Version con persistencia
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Tiempo Sencillo");

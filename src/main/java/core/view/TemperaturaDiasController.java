@@ -2,7 +2,9 @@ package core.view;
 
 import core.MainApp;
 import core.OWM.App;
+import core.SimpleWeather;
 import core.model.Tiempo;
+import core.persistence.exceptions.CityNotFoundException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -48,7 +50,7 @@ public class TemperaturaDiasController {
 
     private Tiempo[] tiempos;
     private MainApp mainApp;
-    private App servidor;
+    private SimpleWeather servidor;
     private Stage primaryStage;
 
 
@@ -90,7 +92,11 @@ public class TemperaturaDiasController {
             public void run() {
 
                 System.out.println(tiempos[0].getCiudad() + ": etiqueta: "+ etiqueta);
-                servidor.addEtiqueta(tiempos[0].getCiudad(), etiqueta);
+                try {
+                    servidor.addEtiqueta(tiempos[0].getCiudad(), etiqueta);
+                } catch (CityNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                                 /*if( servidor.addEtiqueta(tiempo.getCiudad(), etiqueta) ){
                                         // lanza pop-up: Se ha anyadido
@@ -135,7 +141,7 @@ public class TemperaturaDiasController {
         this.primaryStage = primaryStage;
     }
 
-    public void setServer(App servidor) {
+    public void setServer(SimpleWeather servidor) {
         this.servidor = servidor;
     }
 }

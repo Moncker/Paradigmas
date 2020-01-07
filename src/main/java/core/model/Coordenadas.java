@@ -5,19 +5,19 @@ import java.util.Objects;
 
 public class Coordenadas {
 
-    Double X;
-    Double Y;
+    float X;
+    float Y;
 
-    public Coordenadas(Double x, Double y) {
+    public Coordenadas(float x, float y) {
         X = x;
         Y = y;
     }
 
-    public Double getX() {
+    public float getX() {
         return X;
     }
 
-    public Double getY() {
+    public float getY() {
         return Y;
     }
 

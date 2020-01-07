@@ -17,13 +17,13 @@ public class E2ETestPronosticoCoordenadas extends E2ETestBed {
 
     @Test
     public void PronosticoCoordenadasValid() throws IOException, CoordenadasInvalidasException {
-        Tiempo[] tiempos = simpleWeather.pronosticoCoordenadas(42.9, 40.24);
+        Tiempo[] tiempos = simpleWeather.pronosticoCoordenadas(42.9F, 40.24F);
         assertEquals(tiempos.length, 3);
     }
 
     @Test
     public void PronosticoCoordenadasInvalid() throws IOException, CoordenadasInvalidasException {
-        Tiempo[] tiempos = simpleWeather.pronosticoCoordenadas(42.9, 40.24);
+        Tiempo[] tiempos = simpleWeather.pronosticoCoordenadas(42.9F, 40.24F);
         assertEquals(tiempos.length, 3);
     }
 }

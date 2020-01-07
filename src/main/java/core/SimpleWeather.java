@@ -8,21 +8,22 @@ import javafx.collections.ObservableList;
 import java.io.IOException;
 
 public interface SimpleWeather {
-    public Tiempo buscaTiempoPorNombre(String nombre) throws IOException, CityNotFoundException;
-    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, CoordenadasInvalidasException, core.Exceptions.CoordenadasInvalidasException, CoordenadasInvalidasException;
 
-    public Tiempo[] pronosticoNombre(String nombre);
-    public Tiempo[] pronosticoCoordenadas(float lat, float lon) throws CoordenadasInvalidasException;
+    Tiempo buscaTiempoPorNombre(String nombre) throws IOException, CityNotFoundException;
+    Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, CoordenadasInvalidasException, core.Exceptions.CoordenadasInvalidasException, CoordenadasInvalidasException;
 
-    public Boolean addEtiqueta (String ciudad, String etiqueta) throws CityNotFoundException;
-    public Boolean remplaceEtiqueta (String ciudad, String etiqueta);
+    Tiempo[] pronosticoNombre(String nombre);
+    Tiempo[] pronosticoCoordenadas(float lat, float lon) throws CoordenadasInvalidasException;
 
-    public Boolean addFavoritos(String ciudad);
-    public Boolean removeFavoritos(String ciudad);
-    public Boolean getFavoritos(String ciudad);
+    Boolean addEtiqueta (String ciudad, String etiqueta) throws CityNotFoundException;
+    String etiquetaCiudad (String etiqueta); // get ciudad desde etiqueta
+    Boolean remplaceEtiqueta (String ciudad, String etiqueta);
 
+    Boolean addFavoritos(String ciudad);
+    Boolean removeFavoritos(String ciudad);
+    Boolean getFavoritos(String ciudad);
 
-    public ObservableList<String> getFavoritos();
+    ObservableList<String> getFavoritos();
 
 
 }

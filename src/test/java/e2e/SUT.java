@@ -35,7 +35,7 @@ public class SUT implements SimpleWeather {
     }
 
     @Override
-    public Tiempo buscaTiempoPorCoordenadas(double lat, double lon) throws IOException, CoordenadasInvalidasException {
+    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, CoordenadasInvalidasException {
         if (-90 > lat  || 90 < lat || -180 > lon || 180 < lon)
             throw new CoordenadasInvalidasException("Coordenadas no validas");
         return new Tiempo("Madrid", 23.5, "soleado", 45);
@@ -53,7 +53,7 @@ public class SUT implements SimpleWeather {
     }
 
     @Override
-    public Tiempo[] pronosticoCoordenadas(double lat, double lon) throws CoordenadasInvalidasException {
+    public Tiempo[] pronosticoCoordenadas(float lat, float lon) throws CoordenadasInvalidasException {
         if (-90 > lat  || 90 < lat || -180 > lon || 180 < lon)
             throw new CoordenadasInvalidasException("Coordenadas no validas");
         Tiempo[] pronostico = new Tiempo[]{new Tiempo(), new Tiempo(), new Tiempo()};
@@ -62,7 +62,7 @@ public class SUT implements SimpleWeather {
 
     @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) throws CityNotFoundException {
-        if (ciudad.equals("XXX") || etiqueta.length() <= 30)                       // Nombre de ciudad no valida
+        if (ciudad.equals("XXX") || etiqueta.length() >= 30)                       // Nombre de ciudad no valida
             throw new CityNotFoundException("XXX");
         return true;
     }

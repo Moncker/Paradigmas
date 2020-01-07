@@ -1,7 +1,10 @@
 package core.OWM;
 
 import core.SimpleWeather;
+import core.model.Coordenadas;
+import core.model.Localizacion;
 import core.model.Tiempo;
+import core.persistence.Connector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,25 +16,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Clase que pide los datos al servidor OWN,
- * Guarda el estado de la sesion
- */
+public class App_persistence implements SimpleWeather {
 
-public class App implements SimpleWeather {
     private OpenWeatherMap owm = new OpenWeatherMap("weather");
 
     HashMap<String, Tiempo> historial;
-
     HashMap<String, List<String>> ciudadEtiqueta;
     private ObservableList<String> observableFav;
 
-    public App() {
+    Connector connector;
+
+    public App_persistence() {
         this.owm.setApiKey("8d92c4241ad64d0fe808a2f501954581");
         this.historial = new HashMap<String, Tiempo>();
         this.ciudadEtiqueta = new HashMap<>();
         this.observableFav = FXCollections.<String>observableArrayList("Cuenca",
                 "Toledo", "San Sebastian", "Cordoba");
+
+        connector = new Connector();
+        connector.connect();
     }
 
     @Override
@@ -113,26 +116,26 @@ public class App implements SimpleWeather {
             if (historial.containsKey(nombre)) {//MODIFICAR
                 return historial.get(nombre);
             } else {
-                CurrentWeather tiempo = owm.currentWeatherByCityName(nombre);
+                CurrentWeather tiempoOWN = owm.currentWeatherByCityName(nombre);
 
                 // anyadimos a variables los datos dados por la API
-                String ciudad = tiempo.getCityName();
-                float temp = tiempo.getMainInstance().getTemperature();
-                float humedad = tiempo.getMainInstance().getHumidity();
-                float s = tiempo.getCloudsInstance().getPercentageOfClouds();
-                Date date = tiempo.getDateTime();
+                String ciudad = tiempoOWN.getCityName();
+                float temp = tiempoOWN.getMainInstance().getTemperature();
+                float humedad = tiempoOWN.getMainInstance().getHumidity();
+                float s = tiempoOWN.getCloudsInstance().getPercentageOfClouds();
+                Date date = tiempoOWN.getDateTime();
                 LocalDate localdate = date.toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
 
-                Tiempo ti = new Tiempo(ciudad, temp, "" + s, humedad, localdate);
+                Tiempo tiempo = new Tiempo(ciudad, temp, "" + s, humedad, localdate, LocalDate.now());
 
+                connector.saveWeather(tiempo, new Localizacion(ciudad, new Coordenadas(
+                        tiempoOWN.getCoordInstance().getLatitude(),
+                        tiempoOWN.getCoordInstance().getLongitude()
+                )));
 
-                tiempo.getCoordInstance().getLatitude();
-                tiempo.getCoordInstance().getLongitude();
-
-
-                return ti;
+                return tiempo;
             }
 
 
@@ -214,49 +217,5 @@ public class App implements SimpleWeather {
         return observableFav;
     }
 
-  /*  public static void main(String[] args) {
-        App instance=new App();
 
-        try {
-            instance.buscaTiempoPorNombreDias("Madrid");
-            Scanner myObj= new Scanner(System.in);
-            instance.buscaTiempoPorNombreDias("Madrid");
-
-            System.out.println("Que quieres buscar? 1-coordenadas, 2-nombre de ciudad");
-            String op = myObj.nextLine();  // Read user input
-            if(op.equals(""+1)){
-                System.out.println("Introduce latitud");
-                String lat = myObj.nextLine();  // Read user input
-                System.out.println("Introduce longitud");
-                String lon = myObj.nextLine();  // Read user input
-                Tiempo tiempo=instance.buscaTiempoPorCoordenadas(Float.parseFloat(lat),Float.parseFloat(lon));
-                System.out.println("La temperatura es: ");
-                System.out.println(tiempo.getGrados());
-                System.out.println("La humedad es: ");
-                System.out.println(tiempo.getHumedad());
-            }else {
-
-                System.out.println("Introduce el nombre de una ciudad para obtener el tiempo actual: ");
-
-                String ciudad = myObj.nextLine();  // Read user input
-                Tiempo tiempo = instance.buscaTiempoPorNombre(ciudad);
-                System.out.println("La temperatura es: ");
-                System.out.println(tiempo.getGrados());
-                System.out.println("La humedad es: ");
-                System.out.println(tiempo.getHumedad());
-            }
-
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-   */
 }

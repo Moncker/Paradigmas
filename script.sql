@@ -44,7 +44,8 @@ CREATE TABLE Tiempo (
     grados double NOT NULL,
     estado varchar(25) NOT NULL,
     humedad double NOT NULL,
-    fecha date NOT NULL
+    fecha date NOT NULL,
+    fecha_consulta date NOT NULL
 );
 
 

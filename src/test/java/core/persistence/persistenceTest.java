@@ -6,17 +6,17 @@ import org.junit.Before;
 
 public abstract class persistenceTest {
 
-    protected ConnectorStore connectorStore;
+    protected Connector connector;
 
     @Before
     public void setUp() throws Exception {
-        connectorStore = new ConnectorStore();
-        connectorStore.connect();
+        connector = new Connector();
+        connector.connect();
     }
 
     @After
     public void tearDown() throws Exception {
-        connectorStore.close();
-        connectorStore = null;
+        connector.close();
+        connector = null;
     }
 }

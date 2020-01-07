@@ -14,7 +14,6 @@ public class E2ETestTags extends E2ETestBed {
         assertTrue(simpleWeather.addEtiqueta("Madrid", "MDR"));
     }
 
-    //TODO    @Test(expected = CityNotFoundException.class)
     @Test(expected = CityNotFoundException.class)
     public void tiempoNombreInvalid() throws IOException, CityNotFoundException {
         assertTrue(simpleWeather.addEtiqueta("XXX", "MDR"));

@@ -15,12 +15,12 @@ public class E2ETestTiempoCoordenadas extends E2ETestBed {
     @Test
     public void tiempoCoordenadasValid() throws IOException, CityNotFoundException, CoordenadasInvalidasException {
         assertEquals("Coordenadas correctas", "Madrid",
-                simpleWeather.buscaTiempoPorCoordenadas(42.9, 40.24).getCiudad());
+                simpleWeather.buscaTiempoPorCoordenadas(42.9f, 40.24f).getCiudad());
     }
 
     //TODO    @Test(expected = CoordenadasInvalidasException.class)
     @Test(expected = CoordenadasInvalidasException.class)
     public void tiempoCoordenadasInalid() throws IOException, CoordenadasInvalidasException {
-       simpleWeather.buscaTiempoPorCoordenadas(200.0, 200.0);
+       simpleWeather.buscaTiempoPorCoordenadas(200f, 200f);
     }
 }

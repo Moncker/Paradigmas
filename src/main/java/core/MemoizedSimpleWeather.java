@@ -1,9 +1,10 @@
 package core;
 
 import core.Exceptions.CoordenadasInvalidasException;
+import core.OWM.App;
 import core.model.Localizacion;
 import core.model.Tiempo;
-import core.persistence.ConnectorStore;
+import core.persistence.Connector;
 import core.persistence.exceptions.CityNotFoundException;
 import javafx.collections.ObservableList;
 
@@ -17,17 +18,18 @@ import java.io.IOException;
 public class MemoizedSimpleWeather implements SimpleWeather {
 
     SimpleWeather parent;
-    ConnectorStore connectorStore;
+    Connector connector;
 
-    public MemoizedSimpleWeather(SimpleWeather parent, ConnectorStore connectorStore) {
-        this.parent = parent;
-        this.connectorStore = connectorStore;
-        connectorStore.connect();
+    public MemoizedSimpleWeather() {
+        this.parent = new App();
+        this.connector = new Connector();
+        connector.connect();
+        //  inicializa
     }
 
     @Override
     public Tiempo buscaTiempoPorNombre(String nombre) throws IOException, CityNotFoundException {
-        Tiempo tiempo = connectorStore.getWeather(new Localizacion(nombre));
+        Tiempo tiempo = connector.getWeather(new Localizacion(nombre));
 
         if (tiempo != null)
             return tiempo;
@@ -52,6 +54,11 @@ public class MemoizedSimpleWeather implements SimpleWeather {
 
     @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) {
+        return null;
+    }
+
+    @Override
+    public String etiquetaCiudad(String etiqueta) {
         return null;
     }
 

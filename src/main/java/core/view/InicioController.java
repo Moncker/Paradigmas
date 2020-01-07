@@ -1,8 +1,11 @@
 package core.view;
+import core.Exceptions.CoordenadasInvalidasException;
 import core.MainApp;
 import core.OWM.App;
+import core.SimpleWeather;
 import core.model.Localizacion;
 import core.model.Tiempo;
+import core.persistence.exceptions.CityNotFoundException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +27,7 @@ public class InicioController {
     @FXML
     private TextField lon;
 
-    private App servidor;
+    private SimpleWeather servidor;
     private MainApp mainApp;
     private Tiempo tiempo;
 
@@ -44,7 +47,7 @@ public class InicioController {
 
 
     @FXML
-    public void busquedaCoor() throws IOException {
+    public void busquedaCoor() throws IOException, CoordenadasInvalidasException {
         String t = cityname.getText();
         String lati = lat.getText();
         String longi = lon.getText();
@@ -70,7 +73,7 @@ public class InicioController {
                     System.out.println(finalT);
                     Tiempo tiempo = servidor.buscaTiempoPorNombre(finalT);
                     mainApp.showTemperaturaVista(tiempo);
-                } catch (IOException e) {
+                } catch (IOException | CityNotFoundException e) {
                     e.printStackTrace();
                 }
 
@@ -126,7 +129,7 @@ public class InicioController {
                     System.out.println(finalSelectedValue);
                     Tiempo tiempo = servidor.buscaTiempoPorNombre(finalSelectedValue);
                     mainApp.showTemperaturaVista(tiempo);
-                } catch (IOException e) {
+                } catch (IOException | CityNotFoundException e) {
                     e.printStackTrace();
                 }
 
@@ -137,7 +140,7 @@ public class InicioController {
     }
 
 
-    public void setServer(App servidor) {
+    public void setServer(SimpleWeather servidor) {
         this.servidor = servidor;
     }
 

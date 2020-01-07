@@ -12,12 +12,14 @@ import java.util.HashMap;
 
 public class Tiempo {
 
-
     private String ciudad;
     private double grados;
     private String estado;
     private double humedad;
     private LocalDate fecha;
+
+    // Attb solo de base de datos
+    private LocalDate fecha_consulta;
 
     //CONSTRUCTORES
     public Tiempo() {}
@@ -56,9 +58,23 @@ public class Tiempo {
         this.fecha = fecha;
     }
 
+    // Constructor esp de BBDD para gestionar fecha consulta
+    public Tiempo(float grades, String state, float humidity, LocalDate parse, LocalDate fecha_consulta) {
+        this.grados = grades;
+        this.estado = state;
+        this.humedad = humidity;
+        this.fecha = parse;
+        this.fecha_consulta = fecha_consulta;
+    }
 
-
-
+    public Tiempo(String nombre, float grades, String s, float humidity, LocalDate localdate, LocalDate fechaConsulta) {
+        this.ciudad = nombre;
+        this.grados = grades;
+        this.estado = s;
+        this.humedad = humidity;
+        this.fecha = localdate;
+        this.fecha_consulta = fechaConsulta;
+    }
 
 
     //__________________________________SETTERS Y GETTERS___________________________________________
@@ -96,7 +112,9 @@ public class Tiempo {
     }
 
     public boolean compareTo(Tiempo otro){
-        return this.grados == otro.grados && this.humedad == otro.humedad && this.estado.equals(otro.estado);
+        return this.grados == otro.grados && this.humedad == otro.humedad &&
+                this.estado.equals(otro.estado) && this.fecha.toString().equals(otro.fecha.toString())
+                && this.fecha_consulta.toString().equals(otro.fecha_consulta.toString());
     }
 
     @Override
@@ -107,4 +125,9 @@ public class Tiempo {
     public String getCiudad() {
         return this.ciudad;
     }
+
+    public LocalDate getFecha_consulta() {
+        return fecha_consulta;
+    }
+
 }
