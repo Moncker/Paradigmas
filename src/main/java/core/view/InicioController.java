@@ -74,6 +74,18 @@ public class InicioController {
     }
 
     @FXML
+    public void pronosticoCoor() throws IOException, NoValidCoordinatesException {
+        String lati = lat.getText();
+        String longi = lon.getText();
+        Tiempo[] tiempos = servidor.pronosticoCoordenadas(Float.parseFloat(lati), Float.parseFloat(longi));
+
+        System.out.println(tiempos[0].getCiudad());
+
+        mainApp.showTemperaturaDiasVista(tiempos);
+    }
+
+
+    @FXML
     public void pronosticoCiudad() throws IOException {
         String t = cityname.getText();  //tambien etiqueta
         String lati = lat.getText();

@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Connector {
+public class Connector implements IDataBase{
 
     String url = "paradigmas.db";
     private Connection connect;
@@ -116,6 +116,78 @@ public class Connector {
 
         }
         return prevision;
+    }
+
+    public Tiempo getWeatherCoor(float lat, float lon){
+        ResultSet rs;
+        Tiempo tiempo = null;
+        try{
+            PreparedStatement st = connect.prepareStatement("select * from HistorialCoordenada join tiempo using(id_tiempo) where (coordenadaX = "+ lat + " and coordenadaY = "+lon +") and fecha = date('now') order by id_tiempo desc LIMIT 1");
+            rs = st.executeQuery();
+
+            while(rs.next()){
+                float grades = rs.getFloat("grados");
+                String state = rs.getString("estado");
+                float humidity = rs.getFloat("humedad");
+                String date = rs.getString("fecha");
+                String consDate = rs.getString("fecha_consulta");
+
+                tiempo = new Tiempo(lat +" - "+ lon, grades, state, humidity, LocalDate.parse(date), LocalDate.parse(consDate));
+            }
+
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return tiempo;
+    }
+
+    public Tiempo[] getWeatherDaysCoor(float lat, float lon){
+        ResultSet rs;
+        Tiempo[] prevision = new Tiempo[3];
+
+        try {
+            PreparedStatement st = connect.prepareStatement("select * from (select * from tiempo join historialCoordenada using(id_tiempo) where coordenadaX = "+ lat +" and coordenadaY = "+ lon +" order by id_tiempo ASC) group by fecha");
+            rs = st.executeQuery();
+            int indice = 0;
+            while(rs.next()){
+                float grades = rs.getFloat("grados");
+                String state = rs.getString("estado");
+                float humidity = rs.getFloat("humedad");
+                String date = rs.getString("fecha");
+                String consDate = rs.getString("fecha_consulta");
+
+                Tiempo tiempo = new Tiempo(lat+" - "+ lon, grades, state, humidity, LocalDate.parse(date), LocalDate.parse(consDate));
+                prevision[indice] = tiempo;
+                indice++;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return prevision;
+    }
+
+    public void saveWeatherCoor(Tiempo tiempo, float lat, float lon){
+        try{
+            PreparedStatement st = connect.prepareStatement("insert into HistorialCoordenada (id_tiempo, coordenadaX, coordenadaY) values(last_insert_rowid(), ?, ?)");
+            PreparedStatement st_tiempo = connect.prepareStatement("insert into tiempo (grados, estado, humedad, Fecha, fecha_consulta) values (?, ?, ?, ?, ?)");
+
+            st_tiempo.setDouble(1, tiempo.getGrados());
+            st_tiempo.setString(2, tiempo.getEstado());
+            st_tiempo.setDouble(3, tiempo.getHumedad());
+            st_tiempo.setString(4, tiempo.getFecha().toString());
+            st_tiempo.setString(5, tiempo.getFecha_consulta().toString());
+
+            st_tiempo.execute();
+
+            st.setFloat(1, lat);
+            st.setFloat(2, lon);
+            st.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     // METODO PARA GUARDAR UN TIEMPO DE UNA LOCALIZACION

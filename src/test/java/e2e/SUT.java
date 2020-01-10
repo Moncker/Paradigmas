@@ -2,6 +2,7 @@ package e2e;
 
 import core.Exceptions.NoValidCoordinatesException;
 import core.SimpleWeather;
+import core.model.Coordenadas;
 import core.model.Tiempo;
 import core.Exceptions.CityNotFoundException;
 import javafx.collections.ObservableList;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
+
 
 public class SUT implements SimpleWeather {
 
@@ -87,10 +90,6 @@ public class SUT implements SimpleWeather {
 
     }
 
-    @Override
-    public ArrayList<String> getFavoritos(String ciudad) {
-        return favoritos;
-    }
 
 
 
@@ -98,9 +97,11 @@ public class SUT implements SimpleWeather {
     @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) throws CityNotFoundException {
         if (! ciudadEtiquetas.contains(ciudad))
-            ciudadEtiquetas.put(ciudad, new ArrayList<>());
+            return false;
+        return true;
+  //          ciudadEtiquetas.put(ciudad, new ArrayList<>());
 
-        return ciudadEtiquetas.get(ciudad).add(etiqueta);
+//        return ciudadEtiquetas.get(ciudad).add(etiqueta);
     }
 
     @Override
@@ -109,13 +110,22 @@ public class SUT implements SimpleWeather {
     }
 
     @Override
-    public Boolean remplaceEtiqueta(String ciudad, String etiqueta) {
+    public Map<String, ObservableList<String>> getCiudadesEtiquetas() {
         return null;
     }
 
+    @Override
+    public Boolean removeEtiqueta(String ciudadValue, String etiquetaValue) {
+        return null;
+    }
 
     @Override
     public ObservableList<String> getFavoritos() {
+        return null;
+    }
+
+    @Override
+    public Coordenadas getCoordenadas(String selectedValue) {
         return null;
     }
 

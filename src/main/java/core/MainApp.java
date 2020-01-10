@@ -1,6 +1,5 @@
 package core;
 
-import core.OWM.App;
 import core.OWM.App_persistence;
 import core.model.Tiempo;
 import core.view.EtiquetaController;

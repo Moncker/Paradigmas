@@ -48,5 +48,14 @@ CREATE TABLE Tiempo (
     fecha_consulta date NOT NULL
 );
 
+-- Table: HistorialCoordenada
+CREATE TABLE HistorialCoordenada(
+    id_tiempo integer NOT NULL CONSTRAINT Historial_Coordenada_pk PRIMARY KEY,
+    coordenadaX float NOT NULL,
+    coordenadaY float NOT NULL,
+    CONSTRAINT Historial_Coordenada_Tiempo_fk FOREIGN KEY (id_tiempo)
+    REFERENCES Tiempo (id_tiempo) ON DELETE CASCADE
+);
+
 
 

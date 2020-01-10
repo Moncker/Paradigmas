@@ -19,6 +19,10 @@ public class Localizacion {
     public Localizacion(String ciudad) {
     }
 
+    public Localizacion() {
+
+    }
+
     public String getName() {
         return name;
     }

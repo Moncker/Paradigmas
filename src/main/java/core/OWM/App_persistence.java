@@ -60,44 +60,33 @@ public class App_persistence implements SimpleWeather {
 
     @Override
     public Tiempo[] pronosticoCoordenadas(float lat, float lon) {
-        Tiempo[] ret = new Tiempo[3];
+        Tiempo[] ret = connector.getWeatherDaysCoor(lat, lon);
+        if(ret[0] != null || ret[1] != null || ret[2] != null) {
+            byte forecastDays = 3;
 
-        String nombre = connector.getNombre(new Coordenadas(lat,lon));
+            HourlyForecast forecast = owm.dailyForecastByCoordinates(lat, lon, forecastDays);
 
-        if (nombre != null) {
-            Localizacion localizacion = new Localizacion(nombre, new Coordenadas(lat,lon));
-            Tiempo[] t = connector.getWeatherDays(localizacion);
-            if(t[0] != null && t[1] != null && t[2] != null) {
-                return t;
+            int numForecasts = forecast.getForecastCount();//40 SIEMPRE
+
+            for (int i = 0; i < 21; i += 8) {
+                HourlyForecast.Forecast dayForecast = forecast.getForecastInstance(i);
+                Float temperature = dayForecast.getMainInstance().getTemperature();
+                Float humidity = dayForecast.getMainInstance().getHumidity();
+                Float s = dayForecast.getCloudsInstance().getPercentageOfClouds();
+                String a = dayForecast.getWeatherInstance(0).getWeatherDescription();
+                System.out.println(i / 8);
+                ret[i / 8] = new Tiempo(lat+" - "+lon,temperature, s.toString(), humidity, dayForecast.getDateTime().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate(), LocalDate.now());
+                connector.saveWeatherCoor(ret[i / 8], lat, lon);
+
+                System.out.println(ret[i / 8].getCiudad());
+                System.out.println(ret[i / 8].getGrados());
+                System.out.println(ret[i / 8].getHumedad());
+                System.out.println(ret[i / 8].getEstado());
+                System.out.println(ret[i / 8].getFecha().toString());
+                System.out.println("________________________________________________________________");
             }
-        }
-
-        byte forecastDays = 3;
-
-        HourlyForecast forecast = owm.dailyForecastByCoordinates(lat, lon, forecastDays);
-
-        int numForecasts = forecast.getForecastCount();//40 SIEMPRE
-
-        for (int i = 0; i < 21; i += 8) {
-            HourlyForecast.Forecast dayForecast = forecast.getForecastInstance(i);
-            Float temperature = dayForecast.getMainInstance().getTemperature();
-            Float humidity = dayForecast.getMainInstance().getHumidity();
-            Float s = dayForecast.getCloudsInstance().getPercentageOfClouds();
-            String a = dayForecast.getWeatherInstance(0).getWeatherDescription();
-            System.out.println(i / 8);
-            ret[i / 8] = new Tiempo(temperature, s.toString(), humidity, dayForecast.getDateTime().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate());
-            connector.saveWeather(ret[i/8], new Localizacion(nombre, new Coordenadas(lat,lon)));
-
-            System.out.println(ret[i / 8].getCiudad());
-            System.out.println(ret[i / 8].getGrados());
-            System.out.println(ret[i / 8].getHumedad());
-            System.out.println(ret[i / 8].getEstado());
-            System.out.println(ret[i / 8].getFecha().toString());
-            System.out.println("________________________________________________________________");
-
-
         }
         return ret;
     }
@@ -209,25 +198,23 @@ public class App_persistence implements SimpleWeather {
     @Override
     public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException {
 
-        String nombre = connector.getNombre(new Coordenadas(lat,lon));
+        Tiempo ti = connector.getWeatherCoor(lat, lon);
 
-        if (nombre != null) {
-            Localizacion localizacion = new Localizacion(nombre, new Coordenadas(lat,lon));
-            Tiempo t = connector.getWeather(localizacion);
-            if(t != null)
-                return t;
+        if (ti == null) {
+            CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
+            String ciudad = tiempo.getCityName();
+            float temp = tiempo.getMainInstance().getTemperature();
+            float humedad = tiempo.getMainInstance().getHumidity();
+            float s = tiempo.getCloudsInstance().getPercentageOfClouds();
+            Date date = tiempo.getDateTime();
+            LocalDate localdate = date.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            ti = new Tiempo(lat+" - "+lon, temp, "" + s, humedad, localdate, LocalDate.now());
+            // guardas
+            connector.saveWeatherCoor(ti, lat, lon);
         }
 
-        CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
-        String ciudad = tiempo.getCityName();
-        float temp = tiempo.getMainInstance().getTemperature();
-        float humedad = tiempo.getMainInstance().getHumidity();
-        float s = tiempo.getCloudsInstance().getPercentageOfClouds();
-        Date date = tiempo.getDateTime();
-        LocalDate localdate = date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        Tiempo ti = new Tiempo(ciudad, temp, "" + s, humedad, localdate);
         return ti;
 
     }
