@@ -128,6 +128,28 @@ public class InicioController {
     }
 
     @FXML
+    public void borrarFavs() {
+        String selectedValue = favList.getSelectionModel().getSelectedItems().toString().toLowerCase();
+        selectedValue = selectedValue.substring(1, selectedValue.length() - 1);
+
+        servidor.removeFavoritos(selectedValue);
+    }
+
+    @FXML
+    void mostrarTags() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mainApp.showTagVista();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @FXML
     public  void busquedaGeo() throws IOException{
         Platform.runLater(new Runnable() {
             @Override
@@ -144,7 +166,6 @@ public class InicioController {
         });
 
     }
-
 
     public void setServer(SimpleWeather servidor) {
         this.servidor = servidor;

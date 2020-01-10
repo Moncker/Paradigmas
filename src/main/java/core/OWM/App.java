@@ -1,6 +1,7 @@
 package core.OWM;
 
 import core.SimpleWeather;
+import core.model.Coordenadas;
 import core.model.Tiempo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,10 +9,7 @@ import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Clase que pide los datos al servidor OWN,
@@ -22,6 +20,7 @@ public class App implements SimpleWeather {
     private OpenWeatherMap owm = new OpenWeatherMap("weather");
 
     HashMap<String, Tiempo> historial;
+
     HashMap<String, List<String>> ciudadEtiqueta;
     private ObservableList<String> observableFav;
 
@@ -165,13 +164,6 @@ public class App implements SimpleWeather {
         return null;
     }
 
-    @Override
-    public ArrayList<String> getFavoritos(String ciudad) {
-        return null;
-    }
-
-
-
 
     public String etiquetaCiudad(String etiqueta) {
 
@@ -207,15 +199,24 @@ public class App implements SimpleWeather {
     }
 
     @Override
-    public Boolean remplaceEtiqueta(String ciudad, String etiqueta) {
+    public Map<String, ObservableList<String>> getCiudadesEtiquetas() {
         return null;
     }
 
-
+    @Override
+    public Boolean removeEtiqueta(String ciudadValue, String etiquetaValue) {
+        return null;
+    }
 
     public ObservableList<String> getFavoritos() {
         return observableFav;
     }
+
+    @Override
+    public Coordenadas getCoordenadas(String selectedValue) {
+        return null;
+    }
+
 
   /*  public static void main(String[] args) {
         App instance=new App();

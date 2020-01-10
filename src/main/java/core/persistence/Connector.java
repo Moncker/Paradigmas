@@ -1,10 +1,10 @@
 package core.persistence;
 
+import core.Exceptions.CityNotFoundException;
 import core.model.Coordenadas;
 import core.model.Localizacion;
 import core.model.Tiempo;
-import core.persistence.exceptions.AlreadyAddedException;
-import core.Exceptions.CityNotFoundException;
+import core.Exceptions.AlreadyAddedException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -48,7 +48,7 @@ public class Connector {
         ResultSet rs;
         Tiempo weather = null;
         try {
-            PreparedStatement st = connect.prepareStatement("select * from historial join tiempo using(id_tiempo) where (coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY() + ") and fecha = date('now') order by id_tiempo desc LIMIT 1");
+            PreparedStatement st = connect.prepareStatement("select * from historial join tiempo using(id_tiempo) join localizacion using(coordenadaX, coordenadaY) where ((ROUND(localizacion.coordenadaX, 5) = " + localizacion.getCoordenadas().getX() + " and ROUND(localizacion.coordenadaY, 5) = " + localizacion.getCoordenadas().getY() + ") or nombre_ciudad = '"+ localizacion.getName() +"') and fecha = date('now') order by id_tiempo desc LIMIT 1");
             rs = st.executeQuery();
 
             if (rs.next()){
@@ -57,14 +57,18 @@ public class Connector {
                 float humidity = rs.getFloat("humedad");
                 String date = rs.getString("fecha");
                 String consDate = rs.getString("fecha_consulta");
+                String ciudad = rs.getString("nombre_ciudad");
 
-                weather = new Tiempo(grades, state, humidity, LocalDate.parse(date), LocalDate.parse(consDate));
+                weather = new Tiempo(ciudad, grades, state, humidity, LocalDate.parse(date), LocalDate.parse(consDate));
             } else{
                 throw new CityNotFoundException("No se tiene informacion sobre esta ciudad.");
             }
-
-        } catch (SQLException | CityNotFoundException e) {
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
             e.printStackTrace();
+        }catch (CityNotFoundException e){
+
         }
         return weather;
     }
@@ -72,13 +76,13 @@ public class Connector {
     // METODO PARA COGER LA PREDICCION DE VARIOS DIAS DE UNA LOCALIZACION
     // Devuelve una lista vacía si no encuentra informacion
     // Devuelve la lista con los tiempos de cada dia que tengamos almacenados
-    public List<Tiempo> getWeatherDays(Localizacion localizacion){
-        List<Tiempo> prevision = new ArrayList<>();
+    public Tiempo[] getWeatherDays(Localizacion localizacion){
+        Tiempo[] prevision = new Tiempo[3];
         ResultSet rs_city;
         ResultSet rs_prev;
         try{
-            PreparedStatement st_city = connect.prepareStatement("select COUNT() as cantidad from localizacion where coordenadaX = "+ localizacion.getCoordenadas().getX() +" and coordenadaY = "+localizacion.getCoordenadas().getY());
-            PreparedStatement st_prev = connect.prepareStatement("select * from (select * from tiempo join historial using(id_tiempo) where coordenadaX = "+ localizacion.getCoordenadas().getX() +" and coordenadaY = "+ localizacion.getCoordenadas().getY() +" order by id_tiempo DESC) group by fecha;");
+            PreparedStatement st_city = connect.prepareStatement("select COUNT() as cantidad from localizacion where (ROUND(coordenadaX,5) = "+ localizacion.getCoordenadas().getX() +" and ROUND(coordenadaY,5) = "+localizacion.getCoordenadas().getY() +") or nombre_ciudad = '"+ localizacion.getName()+"'");
+            PreparedStatement st_prev = connect.prepareStatement("select * from (select * from tiempo join historial using(id_tiempo) join localizacion using(coordenadaX, coordenadaY) where (ROUND(localizacion.coordenadaX,5) = "+ localizacion.getCoordenadas().getX() +" and ROUND(localizacion.coordenadaY,5) = "+ localizacion.getCoordenadas().getY() +") or nombre_ciudad = '"+ localizacion.getName() +"' order by id_tiempo ASC) group by fecha");
 
             rs_city = st_city.executeQuery();
             int saved = rs_city.getInt("cantidad");
@@ -86,63 +90,84 @@ public class Connector {
             if (saved == 0) throw new CityNotFoundException("No se tienen datos de la ciudad");
 
             rs_prev = st_prev.executeQuery();
+            int index = 0;
 
             while (rs_prev.next()){
-
                 float grades = rs_prev.getFloat("grados");
                 String state = rs_prev.getString("estado");
                 float humidity = rs_prev.getFloat("humedad");
                 String date = rs_prev.getString("fecha");
                 String consDate = rs_prev.getString("fecha_consulta");
+                String ciudad = rs_prev.getString("nombre_ciudad");
 
-                Tiempo weather = new Tiempo(grades, state, humidity, LocalDate.parse(date), LocalDate.parse(consDate));
-                prevision.add(weather);
+                Tiempo weather = new Tiempo(ciudad, grades, state, humidity, LocalDate.parse(date), LocalDate.parse(consDate));
+                prevision[index] = weather;
+                index ++;
             }
 
-            return prevision;
+            rs_city.close();
+            rs_prev.close();
+            st_city.close();
+            st_prev.close();
 
-        }catch (SQLException | CityNotFoundException e){
+        }catch (SQLException e){
             e.printStackTrace();
+        }catch (CityNotFoundException e){
+
         }
         return prevision;
     }
 
     // METODO PARA GUARDAR UN TIEMPO DE UNA LOCALIZACION
     public void saveWeather(Tiempo tiempo, Localizacion localizacion) {
+        ResultSet rs_exs;
         ResultSet rs_loc;
         try {
             // Comprobar localidad existente en bbdd, si no existe crear
-            PreparedStatement st_loc = connect.prepareStatement("select COUNT(nombre_ciudad) as cantidad from localizacion where coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY());
-            rs_loc = st_loc.executeQuery();
-            int saved = rs_loc.getInt("cantidad");
+            PreparedStatement st_exs = connect.prepareStatement("select COUNT() as cantidad from localizacion where (ROUND(coordenadaX, 5) = " + localizacion.getCoordenadas().getX() + " and ROUND(coordenadaY, 5) = " + localizacion.getCoordenadas().getY() + ") or  nombre_ciudad = '"+localizacion.getName()+"'");
+
+            rs_exs = st_exs.executeQuery();
+            int saved = rs_exs.getInt("cantidad");
 
             if (saved == 0) {
                 // creamos localidad
                 PreparedStatement st_cre_loc = connect.prepareStatement("insert into Localizacion (nombre_ciudad, coordenadaX, coordenadaY) values (? , ?,  ?)");
 
-                st_cre_loc.setString(1, localizacion.getName());
-                st_cre_loc.setDouble(2, localizacion.getCoordenadas().getX());
-                st_cre_loc.setDouble(3, localizacion.getCoordenadas().getY());
+                st_cre_loc.setString(1, localizacion.getName().toLowerCase());
+                st_cre_loc.setFloat(2, localizacion.getCoordenadas().getX());
+                st_cre_loc.setFloat(3, localizacion.getCoordenadas().getY());
 
                 st_cre_loc.execute();
             }
 
             // Crear tiempo
-            PreparedStatement st_time = connect.prepareStatement("insert into Tiempo (grados, estado, humedad, Fecha, fecha_consulta) values(?, ?, ?, ?, ?)");
-            st_time.setDouble(1, tiempo.getGrados());
-            st_time.setString(2, tiempo.getEstado());
-            st_time.setDouble(3, tiempo.getHumedad());
-            st_time.setString(4, tiempo.getFecha().toString());
-            st_time.setString(5, tiempo.getFecha_consulta().toString());
+            PreparedStatement st_wt = connect.prepareStatement("insert into Tiempo (grados, estado, humedad, Fecha, fecha_consulta) values(?, ?, ?, ?, ?)");
+            st_wt.setDouble(1, tiempo.getGrados());
+            st_wt.setString(2, tiempo.getEstado());
+            st_wt.setDouble(3, tiempo.getHumedad());
+            st_wt.setString(4, tiempo.getFecha().toString());
+            st_wt.setString(5, tiempo.getFecha_consulta().toString());
 
-            st_time.execute();
+            st_wt.execute();
 
             // Crear en el historial
+            PreparedStatement st_loc = connect.prepareStatement("select * from localizacion where (coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = "+ localizacion.getCoordenadas().getY() + ") or nombre_ciudad = '"+ localizacion.getName().toLowerCase()+"'");
+            rs_loc = st_loc.executeQuery();
+            float coorX = rs_loc.getFloat("coordenadaX");
+            float coorY = rs_loc.getFloat("coordenadaY");
+
             PreparedStatement st_hist = connect.prepareStatement("insert into Historial (id_tiempo, coordenadaX, coordenadaY) values (last_insert_rowid(), ?, ?)");
-            st_hist.setDouble(1, localizacion.getCoordenadas().getX());
-            st_hist.setDouble(2, localizacion.getCoordenadas().getY());
+            st_hist.setFloat(1, coorX);
+            st_hist.setFloat(2, coorY);
 
             st_hist.execute();
+
+            rs_exs.close();
+            rs_loc.close();
+            st_loc.close();
+            st_hist.close();
+            st_exs.close();
+            st_wt.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,6 +179,7 @@ public class Connector {
         try {
             PreparedStatement st_up = connect.prepareStatement("DELETE FROM tiempo WHERE fecha < datetime('now', '-' || 1 || ' days')");
             st_up.execute();
+            st_up.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -165,23 +191,7 @@ public class Connector {
 
     // METODO PARA GUARDAR UN FAVORITO
     public void saveFavourite(Localizacion localizacion) {
-        ResultSet rs_loc;
         try {
-            PreparedStatement st_loc = connect.prepareStatement("select COUNT(nombre_ciudad) as cantidad from localizacion where coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY());
-            rs_loc = st_loc.executeQuery();
-            int exist = rs_loc.getInt("cantidad");
-
-            if (exist == 0) {
-                // No existe la ciudad a añadir a favoritos
-                // creamos localidad
-                PreparedStatement st_cre_loc = connect.prepareStatement("insert into Localizacion (nombre_ciudad, coordenadaX, coordenadaY) values (? , ?,  ?)");
-
-                st_cre_loc.setString(1, localizacion.getName());
-                st_cre_loc.setDouble(2, localizacion.getCoordenadas().getX());
-                st_cre_loc.setDouble(3, localizacion.getCoordenadas().getY());
-
-                st_cre_loc.execute();
-            }
             // creamos favorito
             PreparedStatement st_cre_fav = connect.prepareStatement("insert into Favorito (coordenadaX, coordenadaY) values (?,  ?)");
 
@@ -190,31 +200,27 @@ public class Connector {
 
             st_cre_fav.execute();
 
+            st_cre_fav.close();
         } catch (SQLException e) {
             try {
                 throw new AlreadyAddedException("La ciudad ya está en favoritos.");
             } catch (AlreadyAddedException alreadyAdded) {
-                alreadyAdded.printStackTrace();
+
             }
         }
     }
 
     // METODO PARA BORRAR UN FAVORITO
     public void deleteFavourite(Localizacion localizacion) {
-        ResultSet rs_exist;
         try {
-            PreparedStatement st_exist = connect.prepareStatement("select COUNT() as cantidad from favorito where coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY());
-            rs_exist = st_exist.executeQuery();
-            int exist = rs_exist.getInt("cantidad");
-
-            if (exist == 0) throw new CityNotFoundException("La ciudad no se encuentra entre los favoritos.");
-
-            PreparedStatement st_del_fav = connect.prepareStatement("DELETE FROM favorito WHERE coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY());
+            PreparedStatement st_del_fav = connect.prepareStatement("DELETE FROM favorito WHERE ROUND(coordenadaX,5) = " + localizacion.getCoordenadas().getX() + " and ROUND(coordenadaY,5) = " + localizacion.getCoordenadas().getY());
 
             st_del_fav.execute();
+
+            st_del_fav.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (CityNotFoundException e) {
+       // } catch (CityNotFoundException e) {
         }
     }
 
@@ -231,6 +237,9 @@ public class Connector {
             while (rs_favs.next())
                 list.add(new Localizacion(rs_favs.getString("nombre_ciudad"), new Coordenadas(rs_favs.getFloat("coordenadaX"), rs_favs.getFloat("coordenadaY"))));
 
+            rs_favs.close();
+            st_favs.close();
+
             return list;
 
         } catch (SQLException e) {
@@ -243,25 +252,9 @@ public class Connector {
     // **************************************************** TAG METHODS ********************************************************
     // *************************************************************************************************************************
 
-    // METODO PARA GUARDAR UN FAVORITO
+    // METODO PARA GUARDAR UN TAG
     public void saveTag(Localizacion localizacion, String nombreTag) {
-        ResultSet rs_loc;
         try {
-            PreparedStatement st_loc = connect.prepareStatement("select COUNT() as cantidad from localizacion where coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY());
-            rs_loc = st_loc.executeQuery();
-            int exist = rs_loc.getInt("cantidad");
-
-            if (exist == 0) {
-                // No existe la ciudad a añadir tag
-                // creamos localidad
-                PreparedStatement st_cre_loc = connect.prepareStatement("insert into Localizacion (nombre_ciudad, coordenadaX, coordenadaY) values (? , ?,  ?)");
-
-                st_cre_loc.setString(1, localizacion.getName());
-                st_cre_loc.setDouble(2, localizacion.getCoordenadas().getX());
-                st_cre_loc.setDouble(3, localizacion.getCoordenadas().getY());
-
-                st_cre_loc.execute();
-            }
             // creamos tag
             PreparedStatement st_cre_tag = connect.prepareStatement("insert into Tag (nombre_tag, coordenadaX, coordenadaY) values (?, ?,  ?)");
 
@@ -270,6 +263,8 @@ public class Connector {
             st_cre_tag.setDouble(3, localizacion.getCoordenadas().getY());
 
             st_cre_tag.execute();
+
+            st_cre_tag.close();
         } catch (SQLException e) {
             try {
                 throw new AlreadyAddedException("La ciudad ya tiene un tag asignado.");
@@ -278,37 +273,43 @@ public class Connector {
         }
     }
 
-    // METODO PARA BORRAR UN FAVORITO
-    public void deleteTag(Localizacion localizacion) {
-        ResultSet rs_exist;
+    // METODO PARA BORRAR UN TAG
+    public void deleteTag(Localizacion localizacion, String nombreTag) {
         try {
-            PreparedStatement st_exist = connect.prepareStatement("select COUNT() as cantidad from tag where coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY());
-            rs_exist = st_exist.executeQuery();
-            int exist = rs_exist.getInt("cantidad");
-
-            if (exist == 0) throw new CityNotFoundException("La localización no tiene un tag asignado.");
-
-            PreparedStatement st_del_tag = connect.prepareStatement("DELETE FROM tag WHERE coordenadaX = " + localizacion.getCoordenadas().getX() + " and coordenadaY = " + localizacion.getCoordenadas().getY());
+            PreparedStatement st_del_tag = connect.prepareStatement("DELETE FROM tag WHERE (ROUND(coordenadaX,5) = " + localizacion.getCoordenadas().getX() + " and ROUND(coordenadaY,5) = " + localizacion.getCoordenadas().getY()+") and nombre_tag = '"+nombreTag+"'");
 
             st_del_tag.execute();
+
+            st_del_tag.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (CityNotFoundException e) {
+        //} catch (CityNotFoundException e) {
         }
     }
 
-    // METODO PARA LISTAR TODOS LOS FAVORITOS
+    // METODO PARA LISTAR TODOS LOS TAGS
     // Devuelve null si no tiene ningún tag vinculado
     // Devuelve un mapa con todos los tags almacenados
-    public Map<Localizacion, String> getTags() {
+    public Map<Localizacion, List<String>> getTags() {
         ResultSet rs_tags;
         try {
-            Map<Localizacion, String> map = new HashMap<>();
+            Map<Localizacion, List<String>> map = new HashMap<>();
             PreparedStatement st_tags = connect.prepareStatement("select * from localizacion as loc join tag as t using (coordenadaX, coordenadaY)");
             rs_tags = st_tags.executeQuery();
 
-            while (rs_tags.next())
-                map.put(new Localizacion(rs_tags.getString("nombre_ciudad"), new Coordenadas(rs_tags.getFloat("coordenadaX"), rs_tags.getFloat("coordenadaY"))), rs_tags.getString("nombre_tag"));
+            while (rs_tags.next()){
+                String nombre = rs_tags.getString("nombre_ciudad");
+                Localizacion localizacion = new Localizacion(nombre.substring(0,1).toUpperCase()+nombre.substring(1), new Coordenadas(rs_tags.getFloat("coordenadaX"), rs_tags.getFloat("coordenadaY")));
+
+                if (!map.containsKey(localizacion)) {
+                    // Creamos nueva entrada en el mapa
+                    map.put(localizacion, new ArrayList<>());
+                }
+                map.get(localizacion).add(rs_tags.getString("nombre_tag"));
+            }
+
+            rs_tags.close();
+            st_tags.close();
 
             return map;
 
@@ -318,4 +319,67 @@ public class Connector {
         return null;
     }
 
+    // METODO PARA LISTAR TODOS LOS TAGS DE UNA CIUDAD
+    // Devuelve null si no tiene ningun tag
+    // Devuelve una lista con todos los tags
+    public List<String> getTagsCity (Localizacion localizacion){
+        ResultSet rs;
+        try{
+            PreparedStatement st = connect.prepareStatement("select nombre_tag from tag join localizacion using(coordenadaX, coordenadaY) where (ROUND(localizacion.coordenadaX,5) = "+localizacion.getCoordenadas().getX()+" and ROUND(coordenadaY,5) = "+ localizacion.getCoordenadas().getY()+") or nombre_ciudad = '"+localizacion.getName()+"'");
+            rs = st.executeQuery();
+            List<String> tags = new ArrayList<>();
+
+            while(rs.next())
+                tags.add(rs.getString("nombre_tag"));
+
+            return tags;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // *************************************************************************************************************************
+    // **************************************************** EXTRA METHODS ******************************************************
+    // *************************************************************************************************************************
+
+    // METODO PARA RECOGER LAS COORDENADAS DE UNA LOCALIZACION
+    public Coordenadas getCoor(String nombre){
+        ResultSet rs;
+        Coordenadas coor = null;
+        try {
+            PreparedStatement st = connect.prepareStatement("select coordenadaX, coordenadaY from localizacion where nombre_ciudad = '"+nombre.toLowerCase()+"'");
+            rs = st.executeQuery();
+
+            if (rs.next())
+                coor = new Coordenadas(rs.getFloat("coordenadaX"), rs.getFloat("coordenadaY"));
+
+            rs.close();
+            st.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return coor;
+    }
+
+    // METODO PARA RECOGER EL NOMBRE DE UNA LOCALIZACION
+    public String getNombre(Coordenadas coordenadas){
+        ResultSet rs;
+        String nombre = null;
+        try{
+            PreparedStatement st = connect.prepareStatement("select nombre_ciudad from localizacion where ROUND(coordenadaX, 5) = "+coordenadas.getX()+" and ROUND(coordenadaY, 5) = "+coordenadas.getY());
+            rs = st.executeQuery();
+
+            if (rs.next())
+                nombre = rs.getString("nombre_ciudad");
+
+            rs.close();
+            st.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nombre;
+    }
 }

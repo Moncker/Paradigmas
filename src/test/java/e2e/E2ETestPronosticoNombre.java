@@ -1,7 +1,9 @@
 package e2e;
 
+import core.model.Coordenadas;
+import core.model.Localizacion;
 import core.model.Tiempo;
-import core.Exceptions.CityNotFoundException;
+import core.persistence.exceptions.CityNotFoundException;
 import org.junit.Test;
 
 
@@ -12,19 +14,19 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
 public class E2ETestPronosticoNombre extends E2ETestBed {
+
     @Test
-    public void pronosticoNombreValid() throws CityNotFoundException {
+    public void pronosticoNombreValid() throws IOException{
         Tiempo[] tiempos = simpleWeather.pronosticoNombre("Madrid");
 
-        assertEquals(tiempos[0].getFecha(), LocalDate.now());
-        assertEquals(tiempos[1].getFecha(), LocalDate.now().plusDays(1));
-        assertEquals(tiempos[2].getFecha(), LocalDate.now().plusDays(2));
-
+        //TODO: comprobamos lo que hay dentro
         assertEquals(tiempos.length, 3);
     }
 
-    @Test(expected = CityNotFoundException.class)
-    public void pronosticoNombreInvalid() throws CityNotFoundException {
+    @Test
+    public void pronosticoNombreInvalid() throws IOException, CityNotFoundException {
         Tiempo[] tiempos = simpleWeather.pronosticoNombre("XXX");
+
+        assertNotEquals(tiempos.length, 3);
     }
 }

@@ -84,6 +84,7 @@ public class CurrentWeather extends AbstractWeather {
         this.base = (jsonObj != null) ? jsonObj.optString(JSON_BASE, null) : null;
         this.cityId = (jsonObj != null) ? jsonObj.optLong(JSON_CITY_ID, Long.MIN_VALUE) : Long.MIN_VALUE;
         this.cityName = (jsonObj != null) ? jsonObj.optString(JSON_CITY_NAME, null) : null;
+        System.out.println(cityName);
 
         JSONObject cloudsObj = (jsonObj != null) ? jsonObj.optJSONObject(JSON_CLOUDS) : null;
         this.clouds = (cloudsObj != null) ? new Clouds(cloudsObj) : null;

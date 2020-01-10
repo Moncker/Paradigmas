@@ -2,8 +2,8 @@
 -- tables
 -- Table: Favorito
 CREATE TABLE Favorito (
-    coordenadaX double NOT NULL,
-    coordenadaY double NOT NULL,
+    coordenadaX float NOT NULL,
+    coordenadaY float NOT NULL,
     CONSTRAINT Favorito_pk PRIMARY KEY (coordenadaX,coordenadaY),
     CONSTRAINT Favorito_Localizacion FOREIGN KEY (coordenadaX,coordenadaY)
     REFERENCES Localizacion (coordenadaX,coordenadaY) ON UPDATE CASCADE ON DELETE CASCADE
@@ -12,8 +12,8 @@ CREATE TABLE Favorito (
 -- Table: Historial
 CREATE TABLE Historial (
     id_tiempo integer NOT NULL CONSTRAINT Historial_pk PRIMARY KEY,
-    coordenadaX double NOT NULL,
-    coordenadaY double NOT NULL,
+    coordenadaX float NOT NULL,
+    coordenadaY float NOT NULL,
     CONSTRAINT Historial_Tiempo FOREIGN KEY (id_tiempo)
     REFERENCES Tiempo (id_tiempo) ON DELETE CASCADE,
     CONSTRAINT Historial_Localizacion FOREIGN KEY (coordenadaX,coordenadaY)
@@ -23,17 +23,17 @@ CREATE TABLE Historial (
 -- Table: Localizacion
 CREATE TABLE Localizacion (
     nombre_ciudad varchar(40) NOT NULL,
-    coordenadaX double NOT NULL,
-    coordenadaY double NOT NULL,
+    coordenadaX float NOT NULL,
+    coordenadaY float NOT NULL,
     CONSTRAINT Localizacion_pk PRIMARY KEY (coordenadaX,coordenadaY)
 );
 
 -- Table: Tag
 CREATE TABLE Tag (
     nombre_tag varchar(40) NOT NULL,
-    coordenadaX double NOT NULL,
-    coordenadaY double NOT NULL,
-    CONSTRAINT Tag_pk PRIMARY KEY (coordenadaX,coordenadaY),
+    coordenadaX float NOT NULL,
+    coordenadaY float NOT NULL,
+    CONSTRAINT Tag_pk PRIMARY KEY (coordenadaX,coordenadaY, nombre_tag),
     CONSTRAINT Tag_Localizacion FOREIGN KEY (coordenadaX,coordenadaY)
     REFERENCES Localizacion (coordenadaX,coordenadaY) ON UPDATE CASCADE ON DELETE CASCADE
 );

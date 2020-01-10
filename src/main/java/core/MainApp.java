@@ -3,6 +3,7 @@ package core;
 import core.OWM.App;
 import core.OWM.App_persistence;
 import core.model.Tiempo;
+import core.view.EtiquetaController;
 import core.view.InicioController;
 import core.view.TemperaturaDiasController;
 import core.view.TemperaturaVistaController;
@@ -23,7 +24,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // servidor = new App();    // Version sin persistencia
+         //servidor = new App();    // Version sin persistencia
         servidor = new App_persistence(); //Version con persistencia
 
         this.primaryStage = primaryStage;
@@ -97,6 +98,17 @@ public class MainApp extends Application {
         controller.setMainApp(this);
     }
 
+    public void showTagVista() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/EtiquetaVista.fxml"));
+        AnchorPane etiquetaVista = (AnchorPane) loader.load();
 
+        rootLayout.setCenter(etiquetaVista);
 
+        EtiquetaController controller = loader.getController();
+        controller.setServer(servidor);
+        controller.setPrimaryStage(primaryStage);
+        controller.setMainApp(this);
+
+    }
 }

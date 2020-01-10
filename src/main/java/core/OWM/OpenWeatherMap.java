@@ -228,6 +228,8 @@ public class OpenWeatherMap {
     public CurrentWeather currentWeatherFromRawResponse(String response)
             throws JSONException {
         JSONObject jsonObj = (response != null) ? new JSONObject(response) : null;
+
+        System.out.println(jsonObj.toString());
         return new CurrentWeather(jsonObj);
     }
 

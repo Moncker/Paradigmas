@@ -54,7 +54,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="busquedaCiudad1" layoutX="191.0" layoutY="443.0" mnemonicParsing="false" onAction="#busquedaFavorito" text="Buscar" />
+      <Button layoutX="423.0" layoutY="328.0" mnemonicParsing="false" onAction="#mostrarTags" prefHeight="26.0" prefWidth="151.0" text="Ver etiquetas" />
       <Button fx:id="busquedaCiudad2" layoutX="657.0" layoutY="329.0" mnemonicParsing="false" onAction="#pronosticoCiudad" text="Pronostico" />
       <Separator layoutX="356.0" layoutY="468.0" prefHeight="6.0" prefWidth="400.0" />
       <Label layoutX="346.0" layoutY="482.0" prefHeight="34.0" prefWidth="210.0" text="Por geolocalización">
@@ -63,5 +63,7 @@
          </font>
       </Label>
       <Button layoutX="546.0" layoutY="487.0" mnemonicParsing="false" onAction="#busquedaGeo" text="Buscar" />
+      <Button fx:id="busquedaCiudad1" layoutX="137.0" layoutY="442.0" mnemonicParsing="false" onAction="#borrarFavs" text="Borrar" />
+      <Button fx:id="busquedaCiudad3" layoutX="200.0" layoutY="442.0" mnemonicParsing="false" onAction="#busquedaFavorito" text="Buscar" />
    </children>
 </AnchorPane>
