@@ -1,17 +1,13 @@
 package core.view;
-import core.Exceptions.CoordenadasInvalidasException;
+import core.Exceptions.NoValidCoordinatesException;
 import core.MainApp;
-import core.OWM.App;
 import core.SimpleWeather;
-import core.model.Localizacion;
 import core.model.Tiempo;
-import core.persistence.exceptions.CityNotFoundException;
+import core.Exceptions.CityNotFoundException;
+import core.tools.Geolocation;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 
 import java.io.IOException;
 
@@ -29,7 +25,6 @@ public class InicioController {
 
     private SimpleWeather servidor;
     private MainApp mainApp;
-    private Tiempo tiempo;
 
     @FXML
     private void initialize() {
@@ -44,21 +39,18 @@ public class InicioController {
 
     }
 
-
-
     @FXML
-    public void busquedaCoor() throws IOException, CoordenadasInvalidasException {
-        String t = cityname.getText();
+    public void busquedaCoor() throws IOException, NoValidCoordinatesException {
         String lati = lat.getText();
         String longi = lon.getText();
-        servidor.buscaTiempoPorCoordenadas(Float.parseFloat(lati),Float.parseFloat(longi));
+
+        Tiempo tiempo = servidor.buscaTiempoPorCoordenadas(Float.parseFloat(lati),Float.parseFloat(longi));
+        mainApp.showTemperaturaVista(tiempo);
     }
 
     @FXML
     public void busquedaCiudad() throws IOException {
-        String t = cityname.getText();  //tambien etiqueta
-        String lati = lat.getText();
-        String longi = lon.getText();
+        String t = cityname.getText();
 
         String ciudad = servidor.etiquetaCiudad(t);
         if (! ciudad.equals(""))
@@ -81,9 +73,8 @@ public class InicioController {
         });
     }
 
-
     @FXML
-    public void busquedaCiudadDias() throws IOException {
+    public void pronosticoCiudad() throws IOException {
         String t = cityname.getText();  //tambien etiqueta
         String lati = lat.getText();
         String longi = lon.getText();
@@ -101,7 +92,7 @@ public class InicioController {
                     Tiempo[] tiempos = servidor.pronosticoNombre(finalT);
 
                     mainApp.showTemperaturaDiasVista(tiempos);
-                } catch (IOException e) {
+                } catch (IOException | CityNotFoundException e) {
                     e.printStackTrace();
                 }
 
@@ -110,9 +101,6 @@ public class InicioController {
 
 
     }
-
-
-
 
     @FXML
     public void busquedaFavorito() throws IOException{
@@ -136,6 +124,24 @@ public class InicioController {
             }
         });
 
+
+    }
+
+    @FXML
+    public  void busquedaGeo() throws IOException{
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println(Geolocation.getCityByPublicIp());
+                    Tiempo tiempo = servidor.buscaTiempoPorNombre(Geolocation.getCityByPublicIp());
+                    mainApp.showTemperaturaVista(tiempo);
+                } catch (IOException | CityNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
     }
 

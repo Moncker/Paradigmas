@@ -1,25 +1,30 @@
 package e2e;
 
-import core.Exceptions.CoordenadasInvalidasException;
-import core.OWM.CurrentWeather;
+import core.Exceptions.NoValidCoordinatesException;
 import core.SimpleWeather;
 import core.model.Tiempo;
-import core.persistence.exceptions.CityNotFoundException;
+import core.Exceptions.CityNotFoundException;
 import javafx.collections.ObservableList;
 
-import javax.rmi.CORBA.Tie;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDate;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class SUT implements SimpleWeather {
+
+    ArrayList<String> favoritos;
+    Hashtable<String, String> ciudadEtiquetas;
+
 
     //HashMap <String, HashMap<Date,Tiempo>> ciudadesTiempos;
     //HashMap <Coordenadas, HashMap<Date,Tiempo>> cordenadasTiempos;
     //HashMap <Localizacion, HashMap<Date,Tiempo>> historial;
 
     public SUT() {
+        favoritos = new ArrayList<>();
+        ciudadEtiquetas = new Hashtable<>();
+
         //this.ciudadesTiempos = ciudadesTiempos;
         //this.cordenadasTiempos = cordenadasTiempos;
         //this.historial=historial;
@@ -35,36 +40,72 @@ public class SUT implements SimpleWeather {
     }
 
     @Override
-    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, CoordenadasInvalidasException {
+    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, NoValidCoordinatesException {
         if (-90 > lat  || 90 < lat || -180 > lon || 180 < lon)
-            throw new CoordenadasInvalidasException("Coordenadas no validas");
+            throw new NoValidCoordinatesException("Coordenadas no validas");
         return new Tiempo("Madrid", 23.5, "soleado", 45);
     }
 
     @Override
-    public Tiempo[] pronosticoNombre(String nombre){
+    public Tiempo[] pronosticoNombre(String nombre) throws CityNotFoundException {
         Tiempo[] pronostico;
-        if(nombre.equals("XXX")){
-            pronostico = new Tiempo[]{new Tiempo(), new Tiempo()};
-            return pronostico;
-        }
-            pronostico = new Tiempo[]{new Tiempo(), new Tiempo(), new Tiempo()};
-            return pronostico;
+        if(nombre.equals("XXX"))
+            throw new CityNotFoundException("XXX");
+
+        Tiempo hoy = new Tiempo();
+        Tiempo manana = new Tiempo();
+        Tiempo pasManana = new Tiempo();
+
+        hoy.setFecha(LocalDate.now());
+        manana.setFecha(LocalDate.now().plusDays(1));
+        pasManana.setFecha(LocalDate.now().plusDays(2));
+
+        pronostico = new Tiempo[]{hoy, manana, pasManana};
+        return pronostico;
     }
 
     @Override
-    public Tiempo[] pronosticoCoordenadas(float lat, float lon) throws CoordenadasInvalidasException {
+    public Tiempo[] pronosticoCoordenadas(float lat, float lon) throws NoValidCoordinatesException {
         if (-90 > lat  || 90 < lat || -180 > lon || 180 < lon)
-            throw new CoordenadasInvalidasException("Coordenadas no validas");
+            throw new NoValidCoordinatesException("Coordenadas no validas");
         Tiempo[] pronostico = new Tiempo[]{new Tiempo(), new Tiempo(), new Tiempo()};
         return pronostico;
     }
 
     @Override
+    public Boolean addFavoritos(String ciudad) {
+        if (favoritos.contains(ciudad))
+            return false;
+        return favoritos.add(ciudad);
+    }
+
+    @Override
+    public Boolean removeFavoritos(String ciudad) {
+        if (! favoritos.contains(ciudad))
+            return false;
+        return favoritos.remove(ciudad);
+
+    }
+
+    @Override
+    public ArrayList<String> getFavoritos(String ciudad) {
+        return favoritos;
+    }
+
+
+
+
+    @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) throws CityNotFoundException {
-        if (ciudad.equals("XXX") || etiqueta.length() >= 30)                       // Nombre de ciudad no valida
-            throw new CityNotFoundException("XXX");
-        return true;
+        if (! ciudadEtiquetas.contains(ciudad))
+            ciudadEtiquetas.put(ciudad, new ArrayList<>());
+
+        return ciudadEtiquetas.get(ciudad).add(etiqueta);
+    }
+
+    @Override
+    public String etiquetaCiudad(String etiqueta) {
+        return ciudadEtiquetas.get(etiqueta);
     }
 
     @Override
@@ -72,20 +113,6 @@ public class SUT implements SimpleWeather {
         return null;
     }
 
-    @Override
-    public Boolean addFavoritos(String ciudad) {
-        return null;
-    }
-
-    @Override
-    public Boolean removeFavoritos(String ciudad) {
-        return null;
-    }
-
-    @Override
-    public Boolean getFavoritos(String ciudad) {
-        return null;
-    }
 
     @Override
     public ObservableList<String> getFavoritos() {

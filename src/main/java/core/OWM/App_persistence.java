@@ -209,7 +209,7 @@ public class App_persistence implements SimpleWeather {
     }
 
     @Override
-    public Boolean getFavoritos(String ciudad) {
+    public ArrayList<String> getFavoritos(String ciudad) {
         return null;
     }
 

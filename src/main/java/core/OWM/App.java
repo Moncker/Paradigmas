@@ -22,7 +22,6 @@ public class App implements SimpleWeather {
     private OpenWeatherMap owm = new OpenWeatherMap("weather");
 
     HashMap<String, Tiempo> historial;
-
     HashMap<String, List<String>> ciudadEtiqueta;
     private ObservableList<String> observableFav;
 
@@ -34,6 +33,56 @@ public class App implements SimpleWeather {
                 "Toledo", "San Sebastian", "Cordoba");
     }
 
+    @Override
+    public Tiempo buscaTiempoPorNombre(String nombre) throws IOException {
+        try {
+            if (historial.containsKey(nombre)) {//MODIFICAR
+                return historial.get(nombre);
+            } else {
+                CurrentWeather tiempo = owm.currentWeatherByCityName(nombre);
+
+                // anyadimos a variables los datos dados por la API
+                String ciudad = tiempo.getCityName();
+                float temp = tiempo.getMainInstance().getTemperature();
+                float humedad = tiempo.getMainInstance().getHumidity();
+                float s = tiempo.getCloudsInstance().getPercentageOfClouds();
+                Date date = tiempo.getDateTime();
+                LocalDate localdate = date.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+
+                Tiempo ti = new Tiempo(ciudad, temp, "" + s, humedad, localdate);
+
+
+                tiempo.getCoordInstance().getLatitude();
+                tiempo.getCoordInstance().getLongitude();
+
+
+                return ti;
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException {
+        CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
+        String ciudad = tiempo.getCityName();
+        float temp = tiempo.getMainInstance().getTemperature();
+        float humedad = tiempo.getMainInstance().getHumidity();
+        float s = tiempo.getCloudsInstance().getPercentageOfClouds();
+        Date date = tiempo.getDateTime();
+        LocalDate localdate = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        Tiempo ti = new Tiempo(ciudad, temp, "" + s, humedad, localdate);
+        return ti;
+
+    }
     @Override
     public Tiempo[] pronosticoCoordenadas(float lat, float lon) {
         Tiempo[] ret = new Tiempo[3];
@@ -107,56 +156,22 @@ public class App implements SimpleWeather {
         }
     }
 
-    @Override
-    public Tiempo buscaTiempoPorNombre(String nombre) throws IOException {
-        try {
-            if (historial.containsKey(nombre)) {//MODIFICAR
-                return historial.get(nombre);
-            } else {
-                CurrentWeather tiempo = owm.currentWeatherByCityName(nombre);
-
-                // anyadimos a variables los datos dados por la API
-                String ciudad = tiempo.getCityName();
-                float temp = tiempo.getMainInstance().getTemperature();
-                float humedad = tiempo.getMainInstance().getHumidity();
-                float s = tiempo.getCloudsInstance().getPercentageOfClouds();
-                Date date = tiempo.getDateTime();
-                LocalDate localdate = date.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
-
-                Tiempo ti = new Tiempo(ciudad, temp, "" + s, humedad, localdate);
-
-
-                tiempo.getCoordInstance().getLatitude();
-                tiempo.getCoordInstance().getLongitude();
-
-
-                return ti;
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public Boolean addFavoritos(String ciudad) {
+        return observableFav.add(ciudad);
     }
 
     @Override
-    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException {
-        CurrentWeather tiempo = owm.currentWeatherByCoordinates(lat, lon);
-        String ciudad = tiempo.getCityName();
-        float temp = tiempo.getMainInstance().getTemperature();
-        float humedad = tiempo.getMainInstance().getHumidity();
-        float s = tiempo.getCloudsInstance().getPercentageOfClouds();
-        Date date = tiempo.getDateTime();
-        LocalDate localdate = date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        Tiempo ti = new Tiempo(ciudad, temp, "" + s, humedad, localdate);
-        return ti;
-
+    public Boolean removeFavoritos(String ciudad) {
+        return null;
     }
+
+    @Override
+    public ArrayList<String> getFavoritos(String ciudad) {
+        return null;
+    }
+
+
+
 
     public String etiquetaCiudad(String etiqueta) {
 
@@ -196,19 +211,7 @@ public class App implements SimpleWeather {
         return null;
     }
 
-    public Boolean addFavoritos(String ciudad) {
-        return observableFav.add(ciudad);
-    }
 
-    @Override
-    public Boolean removeFavoritos(String ciudad) {
-        return null;
-    }
-
-    @Override
-    public Boolean getFavoritos(String ciudad) {
-        return null;
-    }
 
     public ObservableList<String> getFavoritos() {
         return observableFav;

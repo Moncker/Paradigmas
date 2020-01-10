@@ -1,10 +1,9 @@
 package core.view;
 
 import core.MainApp;
-import core.OWM.App;
 import core.SimpleWeather;
 import core.model.Tiempo;
-import core.persistence.exceptions.CityNotFoundException;
+import core.Exceptions.CityNotFoundException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

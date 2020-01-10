@@ -1,4 +1,4 @@
-package core.persistence.exceptions;
+package core.Exceptions;
 
 public class CityNotFoundException extends Throwable {
     public CityNotFoundException(String message) {

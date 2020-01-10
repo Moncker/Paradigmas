@@ -55,6 +55,13 @@
          </font>
       </Label>
       <Button fx:id="busquedaCiudad1" layoutX="191.0" layoutY="443.0" mnemonicParsing="false" onAction="#busquedaFavorito" text="Buscar" />
-      <Button fx:id="busquedaCiudad2" layoutX="657.0" layoutY="329.0" mnemonicParsing="false" onAction="#busquedaCiudadDias" text="Pronostico" />
+      <Button fx:id="busquedaCiudad2" layoutX="657.0" layoutY="329.0" mnemonicParsing="false" onAction="#pronosticoCiudad" text="Pronostico" />
+      <Separator layoutX="356.0" layoutY="468.0" prefHeight="6.0" prefWidth="400.0" />
+      <Label layoutX="346.0" layoutY="482.0" prefHeight="34.0" prefWidth="210.0" text="Por geolocalización">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="546.0" layoutY="487.0" mnemonicParsing="false" onAction="#busquedaGeo" text="Buscar" />
    </children>
 </AnchorPane>

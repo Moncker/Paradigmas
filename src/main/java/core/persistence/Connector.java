@@ -4,10 +4,9 @@ import core.model.Coordenadas;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import core.persistence.exceptions.AlreadyAddedException;
-import core.persistence.exceptions.CityNotFoundException;
+import core.Exceptions.CityNotFoundException;
 
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;

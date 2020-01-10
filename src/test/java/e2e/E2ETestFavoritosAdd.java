@@ -1,24 +1,25 @@
 package e2e;
 
-import core.persistence.exceptions.CityNotFoundException;
+import core.Exceptions.CityNotFoundException;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class E2ETestFavoritosAdd extends E2ETestBed {
 
     @Test
-    public void favoritosAdd() throws IOException, CityNotFoundException {
-        assertEquals("Ciudad correcta", "Madrid", simpleWeather.addFavoritos("Madrid"));
+    public void favoritosAdd() throws IOException {
+        assertTrue(simpleWeather.addFavoritos("Madrid"));
     }
 
-    //TODO    @Test(expected = CityNotFoundException.class)
-    @Test(expected = CityNotFoundException.class)
-    public void favoritosAddInvalid() throws IOException, CityNotFoundException {
-        assertNotEquals("Ciudad incorrecta", "XXX", simpleWeather.addFavoritos("XXX"));
+    @Test
+    public void favoritosAddInvalid() throws IOException{
+        // aseguramos que exista la ciudad en favoritos
+        simpleWeather.addFavoritos("Valencia");
+
+        assertFalse(simpleWeather.addFavoritos("Valencia"));
     }
 
 }

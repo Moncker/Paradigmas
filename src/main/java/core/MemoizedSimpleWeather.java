@@ -1,14 +1,15 @@
 package core;
 
-import core.Exceptions.CoordenadasInvalidasException;
+import core.Exceptions.NoValidCoordinatesException;
 import core.OWM.App;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import core.persistence.Connector;
-import core.persistence.exceptions.CityNotFoundException;
+import core.Exceptions.CityNotFoundException;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * CLASE ENCARGADA DE UTILIZAR LA BBDD SI EL DATO EXISTE
@@ -38,7 +39,7 @@ public class MemoizedSimpleWeather implements SimpleWeather {
     }
 
     @Override
-    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, CoordenadasInvalidasException{
+    public Tiempo buscaTiempoPorCoordenadas(float lat, float lon) throws IOException, NoValidCoordinatesException {
         return null;
     }
 
@@ -78,7 +79,7 @@ public class MemoizedSimpleWeather implements SimpleWeather {
     }
 
     @Override
-    public Boolean getFavoritos(String ciudad) {
+    public ArrayList<String> getFavoritos(String ciudad) {
         return null;
     }
 
