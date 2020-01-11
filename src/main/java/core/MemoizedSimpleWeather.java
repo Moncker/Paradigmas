@@ -59,14 +59,33 @@ public class MemoizedSimpleWeather implements SimpleWeather {
             return null;
         }
 
-        @Override
+    @Override
+    public Boolean addEtiquetaCoor(String ciudad, String etiqueta) {
+        return null;
+    }
+
+    @Override
         public String etiquetaCiudad(String etiqueta) {
             return null;
         }
 
+    @Override
+    public String etiquetaCoordenada(String etiqueta) {
+        return null;
+    }
+
+    @Override
+    public Map<String, ObservableList<String>> getCoordenadasEtiquetas() {
+        return null;
+    }
 
     @Override
     public Boolean removeEtiqueta(String ciudadValue, String etiquetaValue) {
+        return null;
+    }
+
+    @Override
+    public Boolean removeEtiquetaCoor(String coorValue, String etiquetaValue) {
         return null;
     }
 

@@ -57,5 +57,13 @@ CREATE TABLE HistorialCoordenada(
     REFERENCES Tiempo (id_tiempo) ON DELETE CASCADE
 );
 
+-- Table: tagCoordenada
+CREATE TABLE TagCoordenada(
+    coordenadaX float NOT NULL,
+    coordenadaY float NOT NULL,
+    nombre_tag varchar(40) NOT NULL,
+    CONSTRAINT TagCoordenada_pk PRIMARY KEY (coordenadaX,coordenadaY, nombre_tag)
+);
+
 
 

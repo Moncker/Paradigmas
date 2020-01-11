@@ -2,10 +2,7 @@ package core;
 
 import core.OWM.App_persistence;
 import core.model.Tiempo;
-import core.view.EtiquetaController;
-import core.view.InicioController;
-import core.view.TemperaturaDiasController;
-import core.view.TemperaturaVistaController;
+import core.view.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -109,5 +106,49 @@ public class MainApp extends Application {
         controller.setPrimaryStage(primaryStage);
         controller.setMainApp(this);
 
+    }
+
+    public void showTagCoorVista() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/EtiquetaCoorVista.fxml"));
+        AnchorPane etiquetaVista = (AnchorPane) loader.load();
+
+        rootLayout.setCenter(etiquetaVista);
+
+        EtiquetaCoorController controller = loader.getController();
+        controller.setServer(servidor);
+        controller.setPrimaryStage(primaryStage);
+        controller.setMainApp(this);
+
+    }
+
+    public void showTemperaturaDiasCoorVista(Tiempo[] tiempos) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/TemperaturaDiasCoorVista.fxml"));
+        AnchorPane temperaturaVista = (AnchorPane) loader.load();
+
+        rootLayout.setCenter(temperaturaVista);
+
+
+        TemperaturaDiasController controller = loader.getController();
+        controller.setServer(servidor);
+        controller.setTiempos(tiempos);
+        controller.setPrimaryStage(primaryStage);
+        controller.setMainApp(this);
+    }
+
+    public void showTemperaturaCoorVista(Tiempo tiempos) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/TemperaturaCoorVista.fxml"));
+        AnchorPane temperaturaVista = (AnchorPane) loader.load();
+
+        rootLayout.setCenter(temperaturaVista);
+
+
+        TemperaturaVistaCoorController controller = loader.getController();
+        controller.setServer(servidor);
+        controller.setTiempo(tiempos);
+        controller.setPrimaryStage(primaryStage);
+        controller.setMainApp(this);
     }
 }

@@ -5,6 +5,8 @@ import core.model.Coordenadas;
 import core.model.Localizacion;
 import core.model.Tiempo;
 import core.Exceptions.AlreadyAddedException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -345,6 +347,20 @@ public class Connector implements IDataBase{
         }
     }
 
+    public void saveCoorTag(float lat, float lon, String etiqueta) {
+        try {
+            PreparedStatement st = connect.prepareStatement("insert into tagCoordenada (coordenadaX, coordenadaY, nombre_tag) values(?, ?, ?)");
+
+            st.setFloat(1, lat);
+            st.setFloat(2, lon);
+            st.setString(3, etiqueta);
+
+            st.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // METODO PARA BORRAR UN TAG
     public void deleteTag(Localizacion localizacion, String nombreTag) {
         try {
@@ -409,6 +425,49 @@ public class Connector implements IDataBase{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Map<String, List<String>> getTagsCoor() {
+        ResultSet rs_tags;
+        try {
+            Map<String, List<String>> map = new HashMap<>();
+            PreparedStatement st_tags = connect.prepareStatement("select * from tagCoordenada");
+            rs_tags = st_tags.executeQuery();
+
+            while (rs_tags.next()){
+                float lat = rs_tags.getFloat("coordenadaX");
+                float lon = rs_tags.getFloat("coordenadaY");
+                String clave = lat + " - " + lon;
+
+                if (!map.containsKey(clave)) {
+                    // Creamos nueva entrada en el mapa
+                    map.put(clave, new ArrayList<>());
+                }
+                map.get(clave).add(rs_tags.getString("nombre_tag"));
+            }
+
+            rs_tags.close();
+            st_tags.close();
+
+            return map;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void deleteTagCoor(float lat, float lon, String etiquetaValue) {
+        try {
+            PreparedStatement st_del_tag = connect.prepareStatement("DELETE FROM tagCoordenada where coordenadaX="+lat+" and coordenadaY="+lon+" and nombre_tag='"+etiquetaValue+"'");
+
+            st_del_tag.execute();
+
+            st_del_tag.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //} catch (CityNotFoundException e) {
+        }
     }
 
     // *************************************************************************************************************************

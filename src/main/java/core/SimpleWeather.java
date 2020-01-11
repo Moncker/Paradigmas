@@ -19,15 +19,17 @@ public interface SimpleWeather {
     Tiempo[] pronosticoCoordenadas(float lat, float lon) throws NoValidCoordinatesException;
 
     Boolean addEtiqueta (String ciudad, String etiqueta) throws CityNotFoundException;
+    Boolean addEtiquetaCoor(String ciudad, String etiqueta);
     String etiquetaCiudad (String etiqueta); // get ciudad desde etiqueta
+    String etiquetaCoordenada (String etiqueta);
+    Map<String, ObservableList<String>> getCoordenadasEtiquetas();
     Map<String, ObservableList<String>> getCiudadesEtiquetas();
     Boolean removeEtiqueta(String ciudadValue, String etiquetaValue);
-
+    Boolean removeEtiquetaCoor(String coorValue, String etiquetaValue);
 
     Boolean addFavoritos(String ciudad);
     Boolean removeFavoritos(String ciudad);
     ObservableList<String> getFavoritos();
 
     Coordenadas getCoordenadas(String selectedValue);
-
 }

@@ -7,10 +7,8 @@ import core.model.Tiempo;
 import core.persistence.Connector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -22,6 +20,7 @@ public class App_persistence implements SimpleWeather {
     private OpenWeatherMap owm = new OpenWeatherMap("weather");
 
     //HashMap<String, Tiempo> historial;
+    Map<String, ObservableList<String>> coordenadaEtiqueta;
     Map<String, ObservableList<String>> ciudadEtiqueta;
     private ObservableList<String> observableFav;
 
@@ -35,9 +34,21 @@ public class App_persistence implements SimpleWeather {
         connector.connect();
         this.ciudadEtiqueta = new HashMap<>();
         cargarTags();
+
+        // cargar etiquetas coordenadas
+        this.coordenadaEtiqueta = new HashMap<>();
+        cargarTagsCoor();
+
         this.observableFav = FXCollections.<String> observableArrayList();
         cargarFavs();
         connector.updateWeatherDatabase();
+    }
+
+    private void cargarTagsCoor(){
+        Map<String, List<String>> tags = connector.getTagsCoor();
+        for (String clave : tags.keySet()){
+            this.coordenadaEtiqueta.put(clave, observableArrayList(tags.get(clave)));
+        }
     }
 
     private void cargarTags(){
@@ -240,22 +251,84 @@ public class App_persistence implements SimpleWeather {
     }
 
     @Override
+    public String etiquetaCoordenada(String etiqueta) {
+
+        if (coordenadaEtiqueta.isEmpty()) {
+            return "";
+        }
+
+        for (String coor : coordenadaEtiqueta.keySet()) {
+            if (coordenadaEtiqueta.get(coor).contains(etiqueta)) {
+                return coor;
+            }
+        }
+        return "";
+
+
+    }
+
+    @Override
+    public Map<String, ObservableList<String>> getCoordenadasEtiquetas() {
+        return coordenadaEtiqueta;
+    }
+
+    @Override
+    public Map<String, ObservableList<String>> getCiudadesEtiquetas() {
+        for(String localizacion : ciudadEtiqueta.keySet()){
+            System.out.println(localizacion);
+        }
+        return ciudadEtiqueta;
+    }
+
+    @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) {
         Coordenadas coordenadas = connector.getCoor(ciudad.toLowerCase());
         Localizacion localizacion = new Localizacion(ciudad.toLowerCase(), coordenadas);
+        boolean existe = true;
 
-        connector.saveTag(localizacion, etiqueta);
         if(ciudadEtiqueta.containsKey(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1))){
             // añadimos a lista
-            System.out.println("AÑADIMOS A LISTA");
-            this.ciudadEtiqueta.get(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1)).add(etiqueta);
+            if(!ciudadEtiqueta.get(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1)).contains(etiqueta)) {
+                System.out.println("AÑADIMOS A LISTA");
+                existe = false;
+                this.ciudadEtiqueta.get(ciudad.substring(0, 1).toUpperCase() + ciudad.substring(1)).add(etiqueta);
+            }
         } else {
             // creamos nuevo
             System.out.println("CREAMOS NUEVO");
+            existe = false;
             this.ciudadEtiqueta.put(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1), FXCollections.observableArrayList(etiqueta));
         }
-
+        if (!existe) connector.saveTag(localizacion, etiqueta);
         return this.ciudadEtiqueta.get(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1)).contains(etiqueta);
+    }
+
+    @Override
+    public Boolean addEtiquetaCoor(String coor, String etiqueta) {
+        String[] coordenadas = coor.split(" - "); // lat - lon
+        float lat = Float.parseFloat(coordenadas[0]);
+        float lon = Float.parseFloat(coordenadas[1]);
+        Float[] clave = new Float[2];
+        clave[0] = lat;
+        clave[1] = lon;
+
+        boolean existe = true;
+
+        if(coordenadaEtiqueta.containsKey(coor)){
+            // añadimos a lista
+            if(!coordenadaEtiqueta.get(coor).contains(etiqueta)) {
+                System.out.println("AÑADIMOS A LISTA");
+                existe = false;
+                this.coordenadaEtiqueta.get(coor).add(etiqueta);
+            }
+        } else {
+            // creamos nuevo
+            System.out.println("CREAMOS NUEVO");
+            existe = false;
+            this.coordenadaEtiqueta.put(coor, FXCollections.observableArrayList(etiqueta));
+        }
+        if (!existe) connector.saveCoorTag(lat, lon, etiqueta);
+        return this.coordenadaEtiqueta.get(coor).contains(etiqueta);
     }
 
     @Override
@@ -267,6 +340,20 @@ public class App_persistence implements SimpleWeather {
         boolean res= ciudadEtiqueta.get(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1)).remove(etiqueta);
         if (ciudadEtiqueta.get(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1)).isEmpty()){
             ciudadEtiqueta.remove(ciudad.substring(0,1).toUpperCase()+ciudad.substring(1));
+        }
+        return res;
+    }
+
+    @Override
+    public Boolean removeEtiquetaCoor(String coorValue, String etiquetaValue) {
+        String[] clave = coorValue.split(" - ");
+        float lat = Float.parseFloat(clave[0]);
+        float lon = Float.parseFloat(clave[1]);
+
+        connector.deleteTagCoor(lat, lon, etiquetaValue);
+        boolean res= coordenadaEtiqueta.get(coorValue).remove(etiquetaValue);
+        if (coordenadaEtiqueta.get(coorValue).isEmpty()){
+            coordenadaEtiqueta.remove(coorValue);
         }
         return res;
     }
@@ -298,14 +385,6 @@ public class App_persistence implements SimpleWeather {
 
     public ObservableList<String> getFavoritos() {
         return observableFav;
-    }
-
-    @Override
-    public Map<String, ObservableList<String>> getCiudadesEtiquetas() {
-        for(String localizacion : ciudadEtiqueta.keySet()){
-            System.out.println(localizacion);
-        }
-        return ciudadEtiqueta;
     }
 
     public Coordenadas getCoordenadas(String nombre){

@@ -19,6 +19,8 @@ public class InicioController {
     @FXML
     private TextField cityname;
     @FXML
+    private TextField tag;
+    @FXML
     private TextField lat;
     @FXML
     private TextField lon;
@@ -44,26 +46,19 @@ public class InicioController {
         String lati = lat.getText();
         String longi = lon.getText();
 
-        Tiempo tiempo = servidor.buscaTiempoPorCoordenadas(Float.parseFloat(lati),Float.parseFloat(longi));
-        mainApp.showTemperaturaVista(tiempo);
+        Tiempo tiempo = servidor.buscaTiempoPorCoordenadas(Float.parseFloat(lati), Float.parseFloat(longi));
+        mainApp.showTemperaturaCoorVista(tiempo);
     }
 
     @FXML
-    public void busquedaCiudad() throws IOException {
+    public void busquedaCiudad() throws IOException, NoValidCoordinatesException, CityNotFoundException {
         String t = cityname.getText();
 
-        String ciudad = servidor.etiquetaCiudad(t);
-        if (! ciudad.equals(""))
-            t = ciudad;
-
-
-        String finalT = t;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    System.out.println(finalT);
-                    Tiempo tiempo = servidor.buscaTiempoPorNombre(finalT);
+                    Tiempo tiempo = servidor.buscaTiempoPorNombre(t);
                     mainApp.showTemperaturaVista(tiempo);
                 } catch (IOException | CityNotFoundException e) {
                     e.printStackTrace();
@@ -79,30 +74,19 @@ public class InicioController {
         String longi = lon.getText();
         Tiempo[] tiempos = servidor.pronosticoCoordenadas(Float.parseFloat(lati), Float.parseFloat(longi));
 
-        System.out.println(tiempos[0].getCiudad());
-
-        mainApp.showTemperaturaDiasVista(tiempos);
+        mainApp.showTemperaturaDiasCoorVista(tiempos);
     }
 
 
     @FXML
-    public void pronosticoCiudad() throws IOException {
-        String t = cityname.getText();  //tambien etiqueta
-        String lati = lat.getText();
-        String longi = lon.getText();
+    public void pronosticoCiudad() throws IOException, NoValidCoordinatesException, CityNotFoundException {
+        String t = cityname.getText();
 
-        String ciudad = servidor.etiquetaCiudad(t);
-        if (! ciudad.equals(""))
-            t = ciudad;
-
-        String finalT = t;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    System.out.println(finalT);
-                    Tiempo[] tiempos = servidor.pronosticoNombre(finalT);
-
+                    Tiempo[] tiempos = servidor.pronosticoNombre(t);
                     mainApp.showTemperaturaDiasVista(tiempos);
                 } catch (IOException | CityNotFoundException e) {
                     e.printStackTrace();
@@ -110,8 +94,6 @@ public class InicioController {
 
             }
         });
-
-
     }
 
     @FXML
@@ -162,6 +144,108 @@ public class InicioController {
     }
 
     @FXML
+    void mostrarTagsCoor(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mainApp.showTagCoorVista();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @FXML
+    void busquedaTag(){
+        String t = tag.getText();
+
+        String coors = servidor.etiquetaCoordenada(t);
+        String ciudad = servidor.etiquetaCiudad(t);
+
+        if (!coors.equals("")) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String[] coordenadas = coors.split(" - ");
+                        float lat = Float.parseFloat(coordenadas[0]);
+                        float lon = Float.parseFloat(coordenadas[1]);
+                        Tiempo tiempo = servidor.buscaTiempoPorCoordenadas(lat, lon);
+                        mainApp.showTemperaturaCoorVista(tiempo);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (NoValidCoordinatesException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        } else if(!ciudad.equals("")){
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Tiempo tiempo = servidor.buscaTiempoPorNombre(ciudad);
+                        mainApp.showTemperaturaVista(tiempo);
+                    } catch (IOException | CityNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+        }else{
+            System.out.println("No existe el tag proporcionado.");
+        }
+    }
+
+    @FXML
+    void pronosticoTag(){
+        String t = tag.getText();
+
+        String coors = servidor.etiquetaCoordenada(t);
+        String ciudad = servidor.etiquetaCiudad(t);
+
+        if (!coors.equals("")) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String[] coordenadas = coors.split(" - ");
+                        float lat = Float.parseFloat(coordenadas[0]);
+                        float lon = Float.parseFloat(coordenadas[1]);
+                        Tiempo[] tiempos = servidor.pronosticoCoordenadas(lat,lon);
+                        mainApp.showTemperaturaDiasCoorVista(tiempos);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (NoValidCoordinatesException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        } else if(!ciudad.equals("")){
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Tiempo[] tiempos = servidor.pronosticoNombre(ciudad);
+                        mainApp.showTemperaturaDiasVista(tiempos);
+                    } catch (IOException | CityNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+        }else{
+            System.out.println("No existe el tag proporcionado.");
+        }
+    }
+
+    @FXML
     public  void busquedaGeo() throws IOException{
         Platform.runLater(new Runnable() {
             @Override
@@ -178,6 +262,8 @@ public class InicioController {
         });
 
     }
+
+
 
     public void setServer(SimpleWeather servidor) {
         this.servidor = servidor;

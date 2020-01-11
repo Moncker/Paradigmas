@@ -182,6 +182,16 @@ public class App implements SimpleWeather {
     }
 
     @Override
+    public String etiquetaCoordenada(String etiqueta) {
+        return null;
+    }
+
+    @Override
+    public Map<String, ObservableList<String>> getCoordenadasEtiquetas() {
+        return null;
+    }
+
+    @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) {
 
         List<String> etiquetas = ciudadEtiqueta.get(ciudad);
@@ -199,12 +209,22 @@ public class App implements SimpleWeather {
     }
 
     @Override
+    public Boolean addEtiquetaCoor(String ciudad, String etiqueta) {
+        return null;
+    }
+
+    @Override
     public Map<String, ObservableList<String>> getCiudadesEtiquetas() {
         return null;
     }
 
     @Override
     public Boolean removeEtiqueta(String ciudadValue, String etiquetaValue) {
+        return null;
+    }
+
+    @Override
+    public Boolean removeEtiquetaCoor(String coorValue, String etiquetaValue) {
         return null;
     }
 
