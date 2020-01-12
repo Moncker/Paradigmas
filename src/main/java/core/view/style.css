@@ -1,0 +1,93 @@
+.background {
+    -fx-background-color: #CDE8FC;
+}
+.text-area .content {
+    -fx-background-color: #CDE8FC;
+    -fx-border-color: #9F34FF;
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+}
+.label {
+    
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #9F34FF;
+    
+}
+.label .header{
+    
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #9F34FF;
+    
+}
+.table-view {
+    -fx-base: #9F34FF;
+    -fx-control-inner-background: #B56EDB;
+    -fx-background-color: #B56EDB;
+    -fx-padding: 5;
+    
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+.button {
+    -fx-padding: 8 15 15 15;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #9F34FF 0%, #5623E8 100%),
+        #9F34FF,
+        #9F34FF;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+}
+
+.button:hover {
+    -fx-background-color: #9F34FF;
+}
+
+.button:pressed, .button:default:hover:pressed {
+  -fx-background-color: white;
+  -fx-text-fill: white;
+}
+.text-field {
+    -fx-background-color: #a9a9a9 , #CDE8FC , #CDE8FC;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-weight: bold;
+}
+
+.text-field:focused {
+    -fx-background-color: #a9a9a9 , #CDE8FC , #CDE8FC;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-weight: bold;
+}
+
+.radio-button .radio{
+-fx-border-width     : 1px   ;
+-fx-border-color     : #9F34FF  ;
+-fx-background-color : white ;
+-fx-background-image : null  ;
+-fx-border-radius    : 15px  ;
+
+
+}
+.radio-button .radio:selected{
+-fx-background-color : white ;
+-fx-background-image : null  ;
+}
+.radio-button -radio:armed{
+-fx-background-color : white ;
+-fx-background-image : null  ;
+}
+.radio-button -radio:determinate{
+-fx-background-color : white ;
+-fx-background-image : null  ;
+}
+.radio-button -radio:indeterminate{
+-fx-background-color : white ;
+-fx-background-image : null  ;
+}

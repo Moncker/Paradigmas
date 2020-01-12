@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="core.view.InicioController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="core.view.InicioController">
    <children>
       <Label alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="55.0" layoutY="44.0" text="LogoDeLaApp" textOverrun="CENTER_WORD_ELLIPSIS">
          <font>
@@ -25,13 +25,13 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <Button fx:id="busquedaCiudad" layoutX="671.0" layoutY="312.0" mnemonicParsing="false" onAction="#busquedaCiudad" text="Buscar" />
+      <Button fx:id="busquedaCiudad" layoutX="660.0" layoutY="304.0" mnemonicParsing="false" onAction="#busquedaCiudad" prefHeight="42.0" prefWidth="97.0" text="Buscar" />
       <TextField fx:id="lon" layoutX="360.0" layoutY="447.0" prefHeight="30.0" prefWidth="106.0" promptText="lon">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <Button fx:id="busquedaCoor" layoutX="676.0" layoutY="437.0" mnemonicParsing="false" onAction="#busquedaCoor" text="Buscar" />
+      <Button fx:id="busquedaCoor" layoutX="664.0" layoutY="426.0" mnemonicParsing="false" onAction="#busquedaCoor" prefHeight="42.0" prefWidth="97.0" text="Buscar" />
       <TextField fx:id="lat" layoutX="535.0" layoutY="447.0" prefHeight="30.0" prefWidth="114.0" promptText="lat">
          <font>
             <Font size="14.0" />
@@ -54,17 +54,17 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="etiquetaNombre" layoutX="428.0" layoutY="350.0" mnemonicParsing="false" onAction="#mostrarTags" prefHeight="26.0" prefWidth="151.0" text="Ver etiquetas" />
+      <Button fx:id="etiquetaNombre" layoutX="428.0" layoutY="350.0" mnemonicParsing="false" onAction="#mostrarTags" prefHeight="34.0" prefWidth="145.0" text="Ver etiquetas" />
       <Button fx:id="busquedaCiudad2" layoutX="660.0" layoutY="351.0" mnemonicParsing="false" onAction="#pronosticoCiudad" text="Pronostico" />
-      <Separator layoutX="349.0" layoutY="521.0" prefHeight="6.0" prefWidth="400.0" />
+      <Separator layoutX="349.0" layoutY="531.0" prefHeight="6.0" prefWidth="400.0" />
       <Label layoutX="349.0" layoutY="534.0" prefHeight="34.0" prefWidth="210.0" text="Por geolocalización">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
       <Button layoutX="570.0" layoutY="539.0" mnemonicParsing="false" onAction="#busquedaGeo" text="Buscar" />
-      <Button fx:id="busquedaCiudad1" layoutX="137.0" layoutY="442.0" mnemonicParsing="false" onAction="#borrarFavs" text="Borrar" />
-      <Button fx:id="busquedaCiudad3" layoutX="200.0" layoutY="442.0" mnemonicParsing="false" onAction="#busquedaFavorito" text="Buscar" />
+      <Button fx:id="busquedaCiudad1" layoutX="78.0" layoutY="442.0" mnemonicParsing="false" onAction="#borrarFavs" text="Borrar" />
+      <Button fx:id="busquedaCiudad3" layoutX="176.0" layoutY="442.0" mnemonicParsing="false" onAction="#busquedaFavorito" text="Buscar" />
       <Button fx:id="busquedaCiudad21" layoutX="665.0" layoutY="474.0" mnemonicParsing="false" onAction="#pronosticoCoor" text="Pronostico" />
       <Label layoutX="349.0" layoutY="144.0" prefHeight="34.0" prefWidth="73.0" text="Por tag">
          <font>
@@ -77,8 +77,8 @@
          </font>
       </TextField>
       <Separator layoutX="349.0" layoutY="263.0" prefHeight="6.0" prefWidth="400.0" />
-      <Button fx:id="busquedaTag" layoutX="671.0" layoutY="178.0" mnemonicParsing="false" onAction="#busquedaTag" text="Buscar" />
-      <Button fx:id="PronosticoTag" layoutX="665.0" layoutY="223.0" mnemonicParsing="false" onAction="#pronosticoTag" text="Pronostico" />
-      <Button fx:id="EtiquetaCoor" layoutX="428.0" layoutY="486.0" mnemonicParsing="false" onAction="#mostrarTagsCoor" prefHeight="26.0" prefWidth="151.0" text="Ver etiquetas" />
+      <Button fx:id="busquedaTag" layoutX="664.0" layoutY="167.0" mnemonicParsing="false" onAction="#busquedaTag" prefHeight="42.0" prefWidth="97.0" text="Buscar" />
+      <Button fx:id="PronosticoTag" layoutX="665.0" layoutY="214.0" mnemonicParsing="false" onAction="#pronosticoTag" text="Pronostico" />
+      <Button fx:id="EtiquetaCoor" layoutX="427.0" layoutY="484.0" mnemonicParsing="false" onAction="#mostrarTagsCoor" prefHeight="26.0" prefWidth="151.0" text="Ver etiquetas" />
    </children>
 </AnchorPane>
