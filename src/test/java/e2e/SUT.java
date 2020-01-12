@@ -5,6 +5,7 @@ import core.SimpleWeather;
 import core.model.Coordenadas;
 import core.model.Tiempo;
 import core.Exceptions.CityNotFoundException;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
@@ -32,7 +33,6 @@ public class SUT implements SimpleWeather {
         //this.cordenadasTiempos = cordenadasTiempos;
         //this.historial=historial;
     }
-
 
     @Override
     public Tiempo buscaTiempoPorNombre(String nombre) throws CityNotFoundException {
@@ -71,7 +71,17 @@ public class SUT implements SimpleWeather {
     public Tiempo[] pronosticoCoordenadas(float lat, float lon) throws NoValidCoordinatesException {
         if (-90 > lat  || 90 < lat || -180 > lon || 180 < lon)
             throw new NoValidCoordinatesException("Coordenadas no validas");
-        Tiempo[] pronostico = new Tiempo[]{new Tiempo(), new Tiempo(), new Tiempo()};
+
+        Tiempo hoy = new Tiempo();
+        Tiempo manana = new Tiempo();
+        Tiempo pasManana = new Tiempo();
+
+        hoy.setFecha(LocalDate.now());
+        manana.setFecha(LocalDate.now().plusDays(1));
+        pasManana.setFecha(LocalDate.now().plusDays(2));
+
+        Tiempo[] pronostico = new Tiempo[]{hoy, manana, pasManana};
+
         return pronostico;
     }
 
@@ -90,9 +100,11 @@ public class SUT implements SimpleWeather {
 
     }
 
-
-
-
+    @Override
+    public ObservableList<String> getFavoritos() {
+        ObservableList<String> favObservable = FXCollections.observableArrayList(favoritos);
+        return favObservable;
+    }
 
     @Override
     public Boolean addEtiqueta(String ciudad, String etiqueta) throws CityNotFoundException {
@@ -105,8 +117,23 @@ public class SUT implements SimpleWeather {
     }
 
     @Override
+    public Boolean addEtiquetaCoor(String ciudad, String etiqueta) {
+        return null;
+    }
+
+    @Override
     public String etiquetaCiudad(String etiqueta) {
         return ciudadEtiquetas.get(etiqueta);
+    }
+
+    @Override
+    public String etiquetaCoordenada(String etiqueta) {
+        return null;
+    }
+
+    @Override
+    public Map<String, ObservableList<String>> getCoordenadasEtiquetas() {
+        return null;
     }
 
     @Override
@@ -120,9 +147,11 @@ public class SUT implements SimpleWeather {
     }
 
     @Override
-    public ObservableList<String> getFavoritos() {
+    public Boolean removeEtiquetaCoor(String coorValue, String etiquetaValue) {
         return null;
     }
+
+
 
     @Override
     public Coordenadas getCoordenadas(String selectedValue) {
